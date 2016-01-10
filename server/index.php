@@ -4,6 +4,8 @@ define('DX_DS', '/');
 define('DX_ROOT_DIR', dirname(__FILE__));
 define('DX_ROOT_PATH', basename(dirname(__FILE__)) . DX_DS);
 define('ROOT_URL', 'http://' . $_SERVER['HTTP_HOST']);
+
+header("Access-Control-Allow-Origin: *");
 //// Bootstrap
 ////include 'config/bootstrap.php';
 //// Define the request home that will always persist in REQUEST_URI
