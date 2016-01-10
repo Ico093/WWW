@@ -10,7 +10,7 @@ namespace DataRepositories;
 
 include_once 'BaseRepositories/baseRepository.php';
 
-class userRepository extends baseRepository
+class accountsRepository extends baseRepository
 {
     function registerUser($id, $username, $password)
     {

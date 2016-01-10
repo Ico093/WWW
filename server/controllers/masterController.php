@@ -42,12 +42,11 @@ class MasterController
 
     public function home()
     {
-        $_SESSION["favcolor"] = "green";
     }
 
     public function index()
     {
-        echo $_SESSION["favcolor"];
+        echo 'index';
     }
 
 }

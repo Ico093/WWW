@@ -20,7 +20,7 @@ class Database
         $password = DB_PASSWORD;
         $database = DB_DATABASE;
 
-        $this->dbConnection = new \mysqli( $host, $username, $password, $database );
+        $this->dbConnection = new mysqli( $host, $username, $password, $database );
     }
 
     public function get_dbConnection() {
