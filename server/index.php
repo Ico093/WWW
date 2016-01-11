@@ -36,6 +36,7 @@ session_start();
 //    }
 //    print "\n";
 //}
+
 $virtualPath = ROOT_URL . DX_DS;
 $currentURL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 

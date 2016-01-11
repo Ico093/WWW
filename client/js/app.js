@@ -3,4 +3,15 @@
  */
 'use strict';
 
-var presentoApp = angular.module("presentoApp", []);
+var presentoApp = angular.module("presentoApp", ['ngResource', 'ngRoute'])
+
+presentoApp.config(function ($routeProvider, $locationProvider) {
+    $routeProvider
+        .when('/presentations', {
+            templateUrl: 'views/presentations.html',
+            controller: 'presentationsController'
+        })
+        .otherwise({
+            redirectTo: '/'
+        });
+});
