@@ -10,7 +10,7 @@ namespace DataRepositories;
 
 use Data\Database;
 
-include_once '../../database.php';
+include_once ROOT . '/data/database.php';
 
 class baseRepository
 {
@@ -19,7 +19,7 @@ class baseRepository
     protected function __construct()
     {
         $database = new Database();
-        $this->dbConnection = $database->get_dbConnection();
+        $this->dbConnection = $database->dbConnection;
     }
 
     protected function prepareSQL($sql)

@@ -1,11 +1,19 @@
 <?php
+include_once 'infrastructure/httpHandler.php';
+
+use Infrastructure\httpHandler;
+
 //// Define root dir and root path
+define('ROOT', $_SERVER['DOCUMENT_ROOT']);
+
 define('DX_DS', '/');
 define('DX_ROOT_DIR', dirname(__FILE__));
 define('DX_ROOT_PATH', basename(dirname(__FILE__)) . DX_DS);
 define('ROOT_URL', 'http://' . $_SERVER['HTTP_HOST']);
 
 header("Access-Control-Allow-Origin: *");
+session_start();
+
 //// Bootstrap
 ////include 'config/bootstrap.php';
 //// Define the request home that will always persist in REQUEST_URI
@@ -28,7 +36,6 @@ header("Access-Control-Allow-Origin: *");
 //    }
 //    print "\n";
 //}
-echo 'izi e hubava';
 $virtualPath = ROOT_URL . DX_DS;
 $currentURL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
@@ -38,8 +45,8 @@ $separator = '/';
 
 $components = array();
 $api = '';
-$controller = 'Master';
-$method = 'index';
+$controller = '';
+$method = '';
 $param = array();
 
 $admin_routing = false;
@@ -48,35 +55,32 @@ $admin_namespace = '';
 
 include_once 'infrastructure/authentication.php';
 
-if (!empty($request)) {
-    // Switch to admin routing
-    if (0 === strpos($request, 'admin')) {
-        $admin_routing = true;
+// Switch to admin routing
+//    if (0 === strpos($request, 'admin')) {
+//        $admin_routing = true;
 //        include_once 'controllers/admin/admin_controller.php';
-        $request = substr($request, strlen('admin/'));
-    }
+//        $request = substr($request, strlen('admin/'));
+//    }
 
-    // Fetch the controller, method and params if any
-    $components = explode('/', $request);
+// Parse URL
+$components = explode('/', $request);
 
-    if (count($components) > 2) {
-        list($api, $controller, $method) = $components;
-        $controller = $controller . 'Controller';
-        $param = isset($components[3]) ? $components[3] : array();
-    }
+if (count($components) > 2) {
+    list($api, $controller, $method) = $components;
+    $controller = $controller . 'Controller';
+    $param = isset($components[3]) ? $components[3] : array();
 }
 
 // If the controller is found
-if(isset($api) && $api!=='api'){
-    echo 'Can\'t touch that';
-    return;
+if (!isset($api) || $api !== 'api') {
+    httpHandler::returnError(400, "Incorrect path.");
 }
 
 if (isset($controller) && file_exists('controllers/' . $controller . '.php')) {
-    if ($admin_routing) {
-        $admin_folder = $admin_routing ? 'admin/' : '';
-        $admin_namespace = $admin_routing ? 'Admin' : '';
-    }
+//    if ($admin_routing) {
+//        $admin_folder = $admin_routing ? 'admin/' : '';
+//        $admin_namespace = $admin_routing ? 'Admin' : '';
+//    }
 
     include_once 'controllers/' . $admin_folder . $controller . '.php';
 

@@ -8,70 +8,58 @@
 
 namespace Infrastructure;
 
+include_once 'httpHandler.php';
 
-class Authentication
+class authentication
 {
-    private static $session = null;
+    private $now;
 
-    private function __construct() {
-        session_start();
-
-        $now = time();
-        if (isset($_SESSION['discard_after']) && $now > $_SESSION['discard_after']) {
-            // this session has worn out its welcome; kill it and start a brand new one
-            session_unset();
-            session_destroy();
-            return;
-        }
-
-        $_SESSION['discard_after'] = $now + 3600;
+    public function __construct()
+    {
+        $this->now = time();
     }
 
-    public static function get_instance() {
-        static $instance = null;
-
-        if ( null === $instance ) {
-            $instance = new static();
-        }
-
-        return $instance;
+    public function isUserLoggedIn()
+    {
+        return isset($_SESSION['token']);
     }
 
-    public function is_logged_in() {
-        if ( isset( $_SESSION['username'] ) ) {
-            return true;
+    public function hasSession(){
+        if (isset($_SESSION['discard_after'])){
+            if($this->now > $_SESSION['discard_after']) {
+                $this->logout();
+                httpHandler::returnError(401, "No information about you on the server.");
+            }else{
+                $_SESSION['discard_after'] = $this->now + 1;
+                return true;
+            }
         }
+
         return false;
     }
 
-    public function login( $username, $password ) {
-//        $db = \Lib\Database::get_instance();
-//        $dbconn = $db->get_db();
-//
-//
-//        $statement = $dbconn->;
-//        $statement->bind_param( 'ss', $username, $password );
-//
-//        $statement->execute();
-//
-//        $result_set = $statement->get_result();
-//
-//        if ( $row = $result_set->fetch_assoc() ) {
-//            $_SESSION['username'] = $username;
-//            $_SESSION['user_id'] = $row['id'];
-//
-//            return true;
-//        }
-//
-//        return false;
+    public function login($id, $username)
+    {
+        $_SESSION['id'] = $id;
+        $_SESSION['username'] = $username;
+        $_SESSION['token']=$this->generateGUID();
+        $_SESSION['discard_after'] = $this->now + 3600;
+
+        return $_SESSION['token'];
     }
 
-    public function logout( ) {
+    public function logout()
+    {
+        $_SESSION = array();
+        if (isset($_COOKIE[session_name()])) {
+            setcookie(session_name(), '', time() - 42000, '/');
+        }
         session_destroy();
     }
 
-    public function get_logged_user() {
-        if ( ! isset( $_SESSION['username'] )  ) {
+    public function get_logged_user()
+    {
+        if (!isset($_SESSION['username'])) {
             return array();
         }
 
@@ -82,19 +70,20 @@ class Authentication
 
     }
 
-    function generateGUID(){
-        if (function_exists('com_create_guid')){
+    public function generateGUID()
+    {
+        if (function_exists('com_create_guid')) {
             return com_create_guid();
-        }else{
-            mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+        } else {
+            mt_srand((double)microtime() * 10000);//optional for php 4.2.0 and up.
             $charid = strtoupper(md5(uniqid(rand(), true)));
             $hyphen = chr(45);// "-"
             $uuid = chr(123)// "{"
-                .substr($charid, 0, 8).$hyphen
-                .substr($charid, 8, 4).$hyphen
-                .substr($charid,12, 4).$hyphen
-                .substr($charid,16, 4).$hyphen
-                .chr(125);// "}"
+                . substr($charid, 0, 8) . $hyphen
+                . substr($charid, 8, 4) . $hyphen
+                . substr($charid, 12, 4) . $hyphen
+                . substr($charid, 16, 4)
+                . chr(125);// "}"
             return $uuid;
         }
     }

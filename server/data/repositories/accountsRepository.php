@@ -12,37 +12,30 @@ include_once 'BaseRepositories/baseRepository.php';
 
 class accountsRepository extends baseRepository
 {
-    function registerUser($id, $username, $password)
+    public function __construct()
     {
-        if(!doesUserExist($username)){
-            $sql = "INSERT INTO users (Id, Username, Password) VALUES (?,?,?)";
-            $statement = $this->prepareSQL($sql);
-            $statement->bind_param('sss', $id, $username, $password);
-
-            if($statement->execute()===TRUE){
-                return true;
-            }
-            else{
-                throw new Exception('Division by zero.');
-            }
-        }
-
-        throw new Exception('User exists.');
+        parent::__construct();
     }
 
-    function doesUserExist($username){
-        $sql = "SELECT COUNT(username) FROM users WHERE username = ?";
-
+    public function login($username, $password)
+    {
+        $sql = "SELECT Id FROM users WHERE Username=? AND Password=?";
         $statement = $this->prepareSQL($sql);
-        $statement->bind_param('s', $username);
+        $statement->bind_param('ss', $username, $password);
+        $statement->execute();
 
-        $result_set = $statement->get_result();
-
-        if ( $row = $result_set->fetch_assoc() ) {
-            return true;
-        }
-
-        return false;
+        $result = $statement->get_result()->fetch_row();
+        return $result[0];//Id
     }
 
+    public function registerUser($username, $password)
+    {
+        $sql = "INSERT INTO users (Username, Password) VALUES (?,?)";
+        $statement = $this->prepareSQL($sql);
+        $statement->bind_param('ss', $username, $password);
+
+        if ($statement->execute() === FALSE) {
+            throw new \Exception($this->dbConnection->error, $this->dbConnection->errno);
+        }
+    }
 }

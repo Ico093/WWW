@@ -8,22 +8,19 @@
 
 namespace Data;
 
+include_once ROOT . "/config/database.php";
 
 class Database
 {
-    private $dbConnection;
+    public $dbConnection;
 
     public function __construct() {
-        // Read the config/db.php db settings
+        // Read the config/database.php db settings
         $host = DB_HOST;
         $username = DB_USERNAME;
         $password = DB_PASSWORD;
         $database = DB_DATABASE;
 
-        $this->dbConnection = new mysqli( $host, $username, $password, $database );
-    }
-
-    public function get_dbConnection() {
-        return $this->dbConnection;
+        $this->dbConnection = new \mysqli( $host, $username, $password, $database );
     }
 }
