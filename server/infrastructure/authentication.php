@@ -8,66 +8,37 @@
 
 namespace Infrastructure;
 
-include_once 'httpHandler.php';
+use DataRepositories\accountsRepository;
+
+include_once ROOT . '/data/repositories/accountsRepository';
+include_once ROOT . '/infrastructure/httpHandler.php';
 
 class authentication
 {
-    private $now;
+    private $accountsRepository;
 
     public function __construct()
     {
-        $this->now = time();
+        $this->accountsRepository = new accountsRepository();
     }
 
-    public function isUserLoggedIn()
+    public function login($userId)
     {
-        return isset($_SESSION['token']);
+        $token = $this->generateGUID();
+
+        $this->accountsRepository->login($userId, $token);
+
+        return $token;
     }
 
-    public function hasSession(){
-        if (isset($_SESSION['discard_after'])){
-            if($this->now > $_SESSION['discard_after']) {
-                $this->logout();
-                httpHandler::returnError(401, "No information about you on the server.");
-            }else{
-                $_SESSION['discard_after'] = $this->now + 1;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function login($id, $username)
+    public function isUserLoggedIn($token)
     {
-        $_SESSION['id'] = $id;
-        $_SESSION['username'] = $username;
-        $_SESSION['token']=$this->generateGUID();
-        $_SESSION['discard_after'] = $this->now + 3600;
-
-        return $_SESSION['token'];
+        return $this->accountsRepository->hasToken($token);
     }
 
-    public function logout()
+    public function getLoggedUser($token)
     {
-        $_SESSION = array();
-        if (isset($_COOKIE[session_name()])) {
-            setcookie(session_name(), '', time() - 42000, '/');
-        }
-        session_destroy();
-    }
-
-    public function get_logged_user()
-    {
-        if (!isset($_SESSION['username'])) {
-            return array();
-        }
-
-        return array(
-            'username' => $_SESSION['username'],
-            'user_id' => $_SESSION['user_id']
-        );
-
+        return $this->accountsRepository->getUserId($token);
     }
 
     public function generateGUID()
