@@ -1,2 +1,17 @@
 <h1>Presentations</h1>
-{{presentation.name}} -> {{presentation.date}} -> {{presentation.time}}
+
+<ul style="list-style-type:none">
+    <li ng-repeat="presentation in presentations">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="bs-component">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{presentation}}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>

@@ -1,11 +1,9 @@
-/**
- * Created by Ico on 1/10/2016.
- */
 'use strict';
 
-var presentoApp = angular.module("presentoApp", ['ngResource', 'ngRoute'])
+var presentoApp = angular.module("presentoApp", ['ngRoute'])
+                         .constant('baseServiceUrl', 'http://localhost:8080')
 
-presentoApp.config(function ($routeProvider, $locationProvider) {
+presentoApp.config(function ($routeProvider) {
     $routeProvider
         .when('/presentations', {
             templateUrl: 'views/presentations.html',
