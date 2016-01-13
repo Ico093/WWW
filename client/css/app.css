@@ -99,6 +99,26 @@
     color: inherit;
 }
 
+/*    --------------------------------------------------
+    :: Other styles
+	-------------------------------------------------- */
+
+#main-container{
+    margin-top:60px;
+}
+
+#pt-table{
+    width: 900px;
+}
+
+#pt-table thead tr td a{
+    text-decoration: none;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
+
 
 /*Registration*/
 .centered-form{

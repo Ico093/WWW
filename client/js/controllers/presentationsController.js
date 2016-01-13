@@ -3,6 +3,10 @@
 presentoApp.controller('presentationsController', ['$scope', 'presentationsService',
     function ($scope, presentationsService) {
 
+        $scope.sortBy = 'title';
+        $scope.sortReverse  = false;
+        $scope.searchFilter = '';
+
         presentationsService.getPresentations()
             .then(function (response) {
                 $scope.presentations = response;

@@ -1,6 +1,6 @@
 'use strict';
 
-var presentoApp = angular.module("presentoApp", ['ngRoute'])
+var presentoApp = angular.module("presentoApp", ['ngRoute', 'ui.bootstrap', 'ui.bootstrap.datepicker'])
     .value('toastr', toastr)
     .value('isAuthenticated', isAuthenticated)
     .constant('baseServiceUrl', 'http://localhost:8080')
