@@ -2,6 +2,7 @@
 
 var presentoApp = angular.module("presentoApp", ['ngRoute'])
     .value('toastr', toastr)
+    .value('isAuthenticated', isAuthenticated)
     .constant('baseServiceUrl', 'http://localhost:8080')
 
 presentoApp.config(function ($routeProvider) {
@@ -25,10 +26,7 @@ presentoApp.config(function ($routeProvider) {
 
 presentoApp.run(function($rootScope, $location) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-        var token = getCookie("auth_token");
-        var expires = getCookie("auth_expires");
-
-        if (token === "" || Date.parse(expires) < Date.now()) {
+        if (!isAuthenticated()) {
             // no logged user, redirect to /login
             if ( next.templateUrl !== "views/login.html" && next.templateUrl !== "views/register.html" ) {
                 $location.path("/login");
@@ -36,6 +34,14 @@ presentoApp.run(function($rootScope, $location) {
         }
     });
 });
+
+function isAuthenticated(){
+    var token = getCookie("auth_token");
+    var expires = getCookie("auth_expires");
+
+    return token !== "" && Date.parse(expires) > Date.now();
+}
+
 
 function getCookie(c_name) {
     var i, x, y, ARRcookies = document.cookie.split(";");

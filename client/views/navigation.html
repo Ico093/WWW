@@ -1,0 +1,22 @@
+<ul class="nav navbar-nav" ng-controller="navigationController">
+    <li ng-show="isAuthenticated()">
+        <a href="#/presentations">Презентации</a>
+    </li>
+    <li ng-show="isAuthenticated()">
+        <a href="">Оцени презентация</a>
+    </li>
+</ul>
+<ul class="nav navbar-nav  pull-right" ng-controller="navigationController">
+    <li ng-show="!isAuthenticated()">
+        <a href="#/register">Регистрирай</a>
+    </li>
+    <li ng-show="!isAuthenticated()">
+        <a href="#/login">Влез</a>
+    </li>
+    <li ng-show="isAuthenticated()">
+        <a>Hi, </a>
+    </li>
+    <li ng-show="isAuthenticated()">
+        <a href="#/" ng-click="logout()">Log out</a>
+    </li>
+</ul>
