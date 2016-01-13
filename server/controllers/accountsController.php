@@ -29,7 +29,7 @@ class accountsController
 
     public function register()
     {
-        if ($_POST) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST["username"]) && isset($_POST["password"])) {
                 $username = $_POST["username"];
                 $password = $_POST["password"];
@@ -54,11 +54,13 @@ class accountsController
 
     public function login()
     {
-        if ($_POST) {
-            if (isset($_POST["username"]) && isset($_POST["password"])) {
-                $username = $_POST["username"];
-                $password = $_POST["password"];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $postdata = file_get_contents("php://input");
+            $request = json_decode($postdata);
+            $username = $request->username;
+            $password = $request->password;
 
+            if (isset($username) && isset($username)) {
                 $id = $this->accountsRepository->hasUser($username, $password);
 
                 if ($id !== NULL) {
@@ -68,7 +70,7 @@ class accountsController
                     httpHandler::returnError(401, 'No such user.');
                 }
             } else {
-                httpHandler::returnError(400, 'Wrong paramethers.');
+//                httpHandler::returnError(400, 'Wrong paramethers.');
             }
         } else {
             httpHandler::returnError(405);
@@ -77,7 +79,7 @@ class accountsController
 
     public function logout()
     {
-        if ($_POST) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST["token"])) {
                 $token = $_POST["token"];
 

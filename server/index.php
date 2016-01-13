@@ -1,16 +1,17 @@
 <?php
+//// Define root dir and root path
+define('ROOT', $_SERVER['DOCUMENT_ROOT']);
+define('DX_DS', '/');
+define('ROOT_URL', 'http://' . $_SERVER['HTTP_HOST']);
+
+
 include_once 'infrastructure/authentication.php';
 include_once 'infrastructure/httpHandler.php';
 
 use Infrastructure\httpHandler;
 use Infrastructure\authentication;
 
-//// Define root dir and root path
-define('ROOT', $_SERVER['DOCUMENT_ROOT']);
-define('DX_DS', '/');
-define('ROOT_URL', 'http://' . $_SERVER['HTTP_HOST']);
-
-header("Access-Control-Allow-Origin: *");
+cors();
 
 $virtualPath = ROOT_URL . DX_DS;
 $currentURL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -41,9 +42,9 @@ if (!isset($api) || $api !== 'api') {
 }
 
 if (isset($controller) && file_exists('controllers/' . $controller . '.php')) {
-    include_once 'controllers/' . $admin_folder . $controller . '.php';
+    include_once 'controllers/' . $controller . '.php';
 
-    $controller_class = $admin_namespace . 'Controllers\\' . $controller;
+    $controller_class = 'Controllers\\' . $controller;
 
     $instance = new $controller_class();
 
@@ -56,4 +57,26 @@ if (isset($controller) && file_exists('controllers/' . $controller . '.php')) {
     }
 } else {
     echo 'No Such Controller';
+}
+
+function cors() {
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Max-Age: 86400');    // cache for 1 day
+    }
+
+    // Access-Control headers are received during OPTIONS requests
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+            header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
+        if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+            header("Access-Control-Allow-Headers:        {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+        exit(0);
+    }
+
+    echo "You have CORS!";
 }

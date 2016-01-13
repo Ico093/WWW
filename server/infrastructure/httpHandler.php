@@ -16,7 +16,7 @@ class httpHandler
         header('Content-Type: application/json; charset=UTF-8');
 
         if(isset($errorMessage)){
-            die(json_encode(array('errorMessage' => $errorMessage)));
+            die(json_encode(array('data' => $errorMessage)));
         }
 
         die();

@@ -10,8 +10,8 @@ namespace Infrastructure;
 
 use DataRepositories\accountsRepository;
 
-include_once ROOT . '/data/repositories/accountsRepository';
-include_once ROOT . '/infrastructure/httpHandler.php';
+include_once ROOT . '\data\repositories\accountsRepository.php';
+include_once ROOT . '\infrastructure\httpHandler.php';
 
 class authentication
 {
