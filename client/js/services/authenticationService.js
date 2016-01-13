@@ -8,7 +8,7 @@ presentoApp.factory('authenticationService', ['$http', '$q', 'baseServiceUrl',
     function ($http, $q, baseServiceUrl) {
         var authenticationApi = baseServiceUrl + '/api/accounts';
 
-        var login = function (username, password) {
+        function login(username, password) {
             var deferred = $q.defer();
 
             $http.post(authenticationApi + '/login', {username: username, password: password})

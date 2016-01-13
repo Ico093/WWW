@@ -26,9 +26,9 @@ class authentication
     {
         $token = $this->generateGUID();
 
-        $this->accountsRepository->login($userId, $token);
+        $date = $this->accountsRepository->login($userId, $token);
 
-        return $token;
+        return array('token' => $token, 'expires' => $date);
     }
 
     public function isUserLoggedIn($token)

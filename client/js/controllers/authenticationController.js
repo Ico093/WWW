@@ -2,9 +2,10 @@
  * Created by Ico on 1/13/2016.
  */
 
-presentoApp.controller('authenticationController', ['$scope', '$location', 'authenticationService',
-    function ($scope, $location, authenticationService) {
-        document.cookie="token=";
+presentoApp.controller('authenticationController', ['$scope', '$location', 'authenticationService', 'notifier',
+    function ($scope, $location, authenticationService, notifier) {
+        document.cookie = "auth_token=";
+        document.cookie = "auth_expires=";
 
         function showPassword() {
             var passwordInput = $('#password');
@@ -29,11 +30,14 @@ presentoApp.controller('authenticationController', ['$scope', '$location', 'auth
 
             authenticationService.login(username, password)
                 .then(function (data) {
-                    document.cookie="token=" + data.token;
+                    document.cookie = 'auth_token=' + data.token;
+                    document.cookie = 'auth_expires=' + data.expires;
+
+                    notifier.success(data.message)
 
                     $location.url("/presentations")
-                }, function (err) {
-                    console.log('error: ' + err);
+                }, function (error) {
+                    notifier.error(error.errorMessage)
                 });
         }
 

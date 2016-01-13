@@ -64,17 +64,18 @@ class accountsController
                 $id = $this->accountsRepository->hasUser($username, $password);
 
                 if ($id !== NULL) {
-                    $token = $this->authentication->login($id);
+                    $result = $this->authentication->login($id);
+                    $result['message']='Успешно логване';
 
-                    httpHandler::returnSuccess(array('token' => $token));
+                    httpHandler::returnSuccess($result);
                 } else {
-                    httpHandler::returnError(401, 'No such user.');
+                    httpHandler::returnError(401, 'Няма такъв потребител');
                 }
             } else {
-//                httpHandler::returnError(400, 'Wrong paramethers.');
+                httpHandler::returnError(400, 'Грешни параметри');
             }
         } else {
-            httpHandler::returnError(405);
+            httpHandler::returnError(405, 'Грешен метод');
         }
     }
 

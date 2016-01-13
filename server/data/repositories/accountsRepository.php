@@ -44,16 +44,19 @@ class accountsRepository extends baseRepository
 
     public function login($userId, $token)
     {
-        $date = date('Y-m-d H:i:s');
+        $today = gmdate("D, d M Y H:i:s \G\M\T");
+        $expires = gmdate("D, d M Y H:i:s \G\M\T", strtotime($today . ' + 1 hour'));
 
         $sql = "INSERT INTO logins (UserId, Token, Expiration) VALUES(?,?,?)";
         $statement = $this->prepareSQL($sql);
-        $statement->bind_param('sss', $userId, $token, $date);
+        $statement->bind_param('sss', $userId, $token, $expires);
         $statement->execute();
 
         if ($statement->execute() === FALSE) {
             throw new \Exception($this->dbConnection->error, $this->dbConnection->errno);
         }
+
+        return $expires;
     }
 
     public function removeLogin($token)
