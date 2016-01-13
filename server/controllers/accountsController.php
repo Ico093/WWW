@@ -60,11 +60,12 @@ class accountsController
             $username = $request->username;
             $password = $request->password;
 
-            if (isset($username) && isset($username)) {
+            if (isset($username) && isset($password)) {
                 $id = $this->accountsRepository->hasUser($username, $password);
 
                 if ($id !== NULL) {
                     $token = $this->authentication->login($id);
+
                     httpHandler::returnSuccess(array('token' => $token));
                 } else {
                     httpHandler::returnError(401, 'No such user.');

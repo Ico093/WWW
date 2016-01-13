@@ -44,9 +44,11 @@ class accountsRepository extends baseRepository
 
     public function login($userId, $token)
     {
+        $date = date('Y-m-d H:i:s');
+
         $sql = "INSERT INTO logins (UserId, Token, Expiration) VALUES(?,?,?)";
         $statement = $this->prepareSQL($sql);
-        $statement->bind_param('sss', $userId, $token, date('Y-m-d H:i:s'));
+        $statement->bind_param('sss', $userId, $token, $date);
         $statement->execute();
 
         if ($statement->execute() === FALSE) {
