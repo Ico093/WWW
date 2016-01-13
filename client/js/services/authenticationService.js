@@ -21,8 +21,22 @@ presentoApp.factory('authenticationService', ['$http', '$q', 'baseServiceUrl',
             return deferred.promise;
         }
 
+        function register(username, password) {
+            var deferred = $q.defer();
+
+            $http.post(authenticationApi + '/register', {username: username, password: password})
+                .success(function (response) {
+                    deferred.resolve(response);
+                }).error(function (err, status) {
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
+        }
+
         return {
-            login: login
+            login: login,
+            register: register
         };
     }]);
 

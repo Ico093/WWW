@@ -30,22 +30,26 @@ class accountsController
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST["username"]) && isset($_POST["password"])) {
-                $username = $_POST["username"];
-                $password = $_POST["password"];
+            $postdata = file_get_contents("php://input");
+            $request = json_decode($postdata);
+            $username = $request->username;
+            $password = $request->password;
 
+            if (isset($username) && isset($password)) {
                 try {
-                    $isLoggedIn = $this->accountsRepository->registerUser($username, $password);
+                    $this->accountsRepository->registerUser($username, $password);
+
+                    httpHandler::returnSuccess(array('message'=>'Успешно регистриране'));
                 } catch (\Exception $ex) {
                     if ($ex->getCode() === 1062)//Username exists
                     {
-                        httpHandler::returnError(400, "User with this username already exists.");
+                        httpHandler::returnError(400, "Съществува такъв потребител");
                     } else {
                         httpHandler::returnError(500);
                     }
                 }
             } else {
-                httpHandler::returnError(400, 'Wrong paramethers.');
+                httpHandler::returnError(400, 'Грешни параметри');
             }
         } else {
             httpHandler::returnError(405);

@@ -41,7 +41,22 @@ presentoApp.controller('authenticationController', ['$scope', '$location', 'auth
                 });
         }
 
+        function register() {
+            var username = $("#username").val();
+            var password = $("#password").val();
+
+            authenticationService.register(username, password)
+                .then(function (data) {
+                    notifier.success(data.message)
+
+                    $location.url("/login")
+                }, function (error) {
+                    notifier.error(error.errorMessage)
+                });
+        }
+
         $scope.showPassword = showPassword;
         $scope.login = login;
+        $scope.register = register;
 
     }]);

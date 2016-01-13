@@ -6,6 +6,10 @@ var presentoApp = angular.module("presentoApp", ['ngRoute'])
 
 presentoApp.config(function ($routeProvider) {
     $routeProvider
+        .when('/register', {
+            templateUrl: 'views/register.html',
+            controller: 'authenticationController'
+        })
         .when('/login', {
             templateUrl: 'views/login.html',
             controller: 'authenticationController'
@@ -26,7 +30,7 @@ presentoApp.run(function($rootScope, $location) {
 
         if (token === "" || Date.parse(expires) < Date.now()) {
             // no logged user, redirect to /login
-            if ( next.templateUrl !== "views/login.html" || next.templateUrl !== "views/register.html" ) {
+            if ( next.templateUrl !== "views/login.html" && next.templateUrl !== "views/register.html" ) {
                 $location.path("/login");
             }
         }
