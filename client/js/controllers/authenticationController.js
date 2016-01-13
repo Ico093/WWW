@@ -2,38 +2,40 @@
  * Created by Ico on 1/13/2016.
  */
 
-presentoApp.controller('authenticationController', ['$scope', 'authenticationService',
-    function ($scope, authenticationService) {
+presentoApp.controller('authenticationController', ['$scope', '$location', 'authenticationService',
+    function ($scope, $location, authenticationService) {
+        document.cookie="token=";
 
         function showPassword() {
-
-            var key_attr = $('#password').attr('type');
+            var passwordInput = $('#password');
+            var key_attr = passwordInput.attr('type');
 
             if (key_attr != 'text') {
 
                 $('.checkbox').addClass('show');
-                $('#password').attr('type', 'text');
+                passwordInput.attr('type', 'text');
 
             } else {
 
                 $('.checkbox').removeClass('show');
-                $('#password').attr('type', 'password');
+                passwordInput.attr('type', 'password');
 
             }
-        };
+        }
 
         function login() {
             var username = $("#username").val();
             var password = $("#password").val();
 
             authenticationService.login(username, password)
-                .then(function (response) {
+                .then(function (data) {
+                    document.cookie="token=" + data.token;
 
-                    console.log(response);
+                    $location.url("/presentations")
                 }, function (err) {
                     console.log('error: ' + err);
                 });
-        };
+        }
 
         $scope.showPassword = showPassword;
         $scope.login = login;
