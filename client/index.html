@@ -14,14 +14,7 @@
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="#/presentations">Презентации</a>
-                </li>
-                <li>
-                    <a href="">Оцени презентация</a>
-                </li>
-            </ul>
+            <div ng-include="'/views/navigation.html'"></div>
         </div>
     </div>
 </div>
@@ -52,9 +45,11 @@
 <!--Controllers-->
 <script type="application/javascript" src="/js/controllers/authenticationController.js"></script>
 <script type="application/javascript" src="/js/controllers/presentationsController.js"></script>
+<script type="application/javascript" src="/js/controllers/navigationController.js"></script>
 
 <!--Services-->
 <script type="application/javascript" src="/js/services/authenticationService.js"></script>
 <script type="application/javascript" src="/js/services/presentationsService.js"></script>
+<script type="application/javascript" src="/js/services/notifier.js"></script>
 </body>
 </html>
