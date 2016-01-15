@@ -1,7 +1,7 @@
 'use strict';
 
-presentoApp.controller('presentationsController', ['$scope', 'presentationsService',
-    function ($scope, presentationsService) {
+presentoApp.controller('presentationsController', ['$scope', 'presentationsService', 'notifier',
+    function ($scope, presentationsService, notifier) {
 
         $scope.sortBy = 'title';
         $scope.sortReverse  = false;
@@ -10,10 +10,18 @@ presentoApp.controller('presentationsController', ['$scope', 'presentationsServi
         presentationsService.getPresentations()
             .then(function (response) {
                 $scope.presentations = response;
-                console.log(response);
             }, function (err) {
-               console.log('error: ' + err);
+               notifier.error(err);
             });
+
+        $scope.getPresentationById = function(id){
+            presentationsService.getPresentationById(id)
+                .then(function (response) {
+                    $scope.presentation = response;
+                }, function (err) {
+                    notifier.error(err);
+                });
+        }
 
       /*  $interval(function () {
             MessagesService.getFilteredMessages($scope.filters)

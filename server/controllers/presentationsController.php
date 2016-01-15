@@ -21,4 +21,9 @@ class presentationsController
         $presentations = $this->presentationsRepository->getPresentations();
         httpHandler::returnSuccess($presentations);
     }
+
+    public function getById($id){
+        $presentation = $this->presentationsRepository->getPresentationById($id);
+        httpHandler::returnSuccess($presentation);
+    }
 }

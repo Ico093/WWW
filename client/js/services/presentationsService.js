@@ -10,7 +10,20 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl',
             $http.get(presentationsApi + '/get')
                 .success(function (response) {
                     deferred.resolve(response);
-                }).error(function (err, status) {
+                }).error(function (err) {
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
+        }
+
+        var getPresentationById = function (id) {
+            var deferred = $q.defer();
+
+            $http.get(presentationsApi + "/getById/" + id)
+                .success(function(response){
+                    deferred.resolve(response);
+                }).error(function(err){
                 deferred.reject(err);
             });
 
@@ -18,6 +31,7 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl',
         }
 
         return {
-            getPresentations: getPresentations
+            getPresentations: getPresentations,
+            getPresentationById: getPresentationById
         };
     }]);

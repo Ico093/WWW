@@ -12,7 +12,7 @@ class presentationsRepository extends baseRepository
     }
 
     public function getPresentations(){
-        $sqlQuery = "SELECT p.Id, p.Title, p.Description, p.Date, p.From, p.To, u.Username FROM presentations p INNER JOIN users u ON p.UserId = u.Id";
+        $sqlQuery = "SELECT p.Id, p.Title, p.Date, p.From, p.To, u.Username FROM presentations p INNER JOIN users u ON p.UserId = u.Id";
         $statement = $this->prepareSQL($sqlQuery);
         $statement->execute();
         $presentationsResult = $statement->get_result()->fetch_all();
@@ -23,13 +23,23 @@ class presentationsRepository extends baseRepository
                 array(
                     'id' => $presentation[0],
                     'title' => $presentation[1],
-                    'description' =>$presentation[2],
-                    'date' => $presentation[3],
-                    'from' => $presentation[4],
-                    'to' => $presentation[5],
-                    'user' => $presentation[6]));
+                    'date' => $presentation[2],
+                    'from' => $presentation[3],
+                    'to' => $presentation[4],
+                    'user' => $presentation[5]));
         }
 
         return $presentations;
+    }
+
+    public function getPresentationById($id){
+        $sqlQuery = "SELECT p.Title, p.Description, p.Date, p.From, p.To, u.Username FROM presentations p INNER JOIN users u ON p.UserId = u.Id WHERE p.Id = $id";
+        $statement = $this->prepareSQL($sqlQuery);
+        $statement->execute();
+
+        $presentationResult = $statement->get_result()->fetch_assoc();
+        $presentation = array_change_key_case($presentationResult, CASE_LOWER);
+
+        return $presentation;
     }
 }
