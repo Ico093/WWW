@@ -26,7 +26,7 @@ class presentationsRepository extends baseRepository
                     'date' => $presentation[2],
                     'from' => $presentation[3],
                     'to' => $presentation[4],
-                    'user' => $presentation[5]));
+                    'username' => $presentation[5]));
         }
 
         return $presentations;
@@ -41,5 +41,28 @@ class presentationsRepository extends baseRepository
         $presentation = array_change_key_case($presentationResult, CASE_LOWER);
 
         return $presentation;
+    }
+
+    public function createPresentation($presentation){
+
+        $userId = $this->getUserId($presentation["username"]);
+        $title = $presentation["title"];
+        $description = $presentation["description"];
+        $date = $presentation["date"];
+        $from = $presentation["from"];
+        $to = $presentation["to"];
+
+        $sql = "INSERT INTO presentations (Title, Description, UserId, Date, From, To) VALUES (?,?,?,?,?,?)";
+        $statement = $this->prepareSQL($sql);
+        $statement->bind_param('ssssss', $title, $description, $userId, $date, $from, $to);
+        return $statement->execute();
+    }
+
+    private function getUserId($username){
+        $sqlQuery = "SELECT Id FROM users WHERE Username = ?";
+        $statement = $this->prepareSQL($sqlQuery);
+        $statement->bind_param('s', $username);
+        $statement->execute();
+        return $statement->get_result()->fetch_row()[0];
     }
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-var presentoApp = angular.module("presentoApp", ['ngRoute', 'ui.bootstrap', 'ui.bootstrap.datepicker'])
+var presentoApp = angular.module("presentoApp", ['ngRoute', 'ui.bootstrap', 'ui.bootstrap.datepicker', 'ui.bootstrap.timepicker'])
     .value('toastr', toastr)
     .value('isAuthenticated', isAuthenticated)
     .constant('baseServiceUrl', 'http://localhost:8080')
@@ -22,6 +22,10 @@ presentoApp.config(function ($routeProvider) {
         .when('/presentation/:id', {
             templateUrl: 'views/presentation-details.html',
             controller: 'presentationDetailsController'
+        })
+        .when('/presentations/create', {
+            templateUrl: 'views/presentations-create.html',
+            controller: 'presentationsCreateController'
         })
         .otherwise({
             redirectTo: '/'
