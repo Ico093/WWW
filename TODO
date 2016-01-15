@@ -1,0 +1,10 @@
+TODO:
+
+-Paging in presentation page (+ take only presentations for current page from server)
+-Finish file upload.
+-Logout fix.
+-When the presentation is about to be saved in the DB, get current logged user username (remove hardcoded username)
+-Server and client validation.
+-Write error messages.
+-Finish presentation details view.
+-Leave feedback of a presentation.
