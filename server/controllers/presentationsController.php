@@ -27,30 +27,30 @@ class presentationsController
         httpHandler::returnSuccess($presentation);
     }
 
-    public function create(){
-
+    public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
             $title = $_POST["title"];
             $description = $_POST["description"];
-            $date = $_POST["date"];
-            $from = $_POST["from"];
-            $to = $_POST["to"];
-            $username = $_POST["username"];
+            $ondate = $_POST["ondate"];
+            $fromtime = $_POST["fromtime"];
+            $totime = $_POST["totime"];
+            $username = "izi";
+            /*$username = $_POST["username"];*/
+            /*$file = $_FILES["presentationFile"];*/
 
-            $presentation = array();
-            array_push($presentation,
-                array(
-                    'title' => $title,
-                    'description' => $description,
-                    'date' => $date,
-                    'from' => $from,
-                    'to' => $to,
-                    'username' => $username));
+            $presentation = array(
+                'title' => $title,
+                'description' => $description,
+                'ondate' => $ondate,
+                'fromtime' => $fromtime,
+                'totime' => $totime,
+                'username' => $username);
 
             if ($this->presentationsRepository->createPresentation($presentation)) {
                 httpHandler::returnSuccess(200, "Презентацията е добавена.");
             } else {
-                httpHandler::returnError(500, 'Настъпи грешка!');
+                httpHandler::returnError(500, 'Настъпи грешка.');
             }
         }
     }

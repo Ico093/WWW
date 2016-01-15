@@ -30,18 +30,18 @@
                         <span ng-show="sortBy == 'title' && sortReverse" class="fa fa-caret-up"></span>
                     </td>
                     <th>
-                        <a href="#/presentations" ng-click="sortBy = 'date'; sortReverse = !sortReverse">
+                        <a href="#/presentations" ng-click="sortBy = 'ondate'; sortReverse = !sortReverse">
                             Дата
                         </a>
-                        <span ng-show="sortBy == 'date' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortBy == 'date' && sortReverse" class="fa fa-caret-up"></span>
+                        <span ng-show="sortBy == 'ondate' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortBy == 'ondate' && sortReverse" class="fa fa-caret-up"></span>
                     </th>
                     <th>
-                        <a href="#/presentations" ng-click="sortBy = 'from'; sortReverse = !sortReverse">
+                        <a href="#/presentations" ng-click="sortBy = 'fromtime'; sortReverse = !sortReverse">
                             Час
                         </a>
-                        <span ng-show="sortBy == 'from' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortBy == 'from' && sortReverse" class="fa fa-caret-up"></span>
+                        <span ng-show="sortBy == 'fromtime' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortBy == 'fromtime' && sortReverse" class="fa fa-caret-up"></span>
                     </th>
                     <th>
                         <a href="#/presentations" ng-click="sortBy = 'username'; sortReverse = !sortReverse">
@@ -53,12 +53,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat = "presentation in presentations | orderBy:sortBy:sortReverse | filter:searchFilter">
+                <tr ng-repeat = "presentation in presentations | orderBy:sortBy:sortReverse | filter:searchFilter ">
                     <td>
                         <a href="#/presentation/{{presentation.id}}"> {{presentation.title}}</a>
                     </td>
-                    <td>{{presentation.date}}</td>
-                    <td>{{presentation.from | number: 2}}  - {{presentation.to | number:2}} </td>
+                    <td>{{presentation.ondate}}</td>
+                    <td>{{presentation.fromtime | number: 2}}  - {{presentation.totime | number:2}} </td>
                     <td>{{presentation.username}}</td>
                 </tr>
                 </tbody>
@@ -66,28 +66,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-<!--<div class="row">
-    <div class="col-md-6">
-        <p class="input-group">
-            <input type="text" class="form-control ng-pristine ng-valid ng-isolate-scope ng-valid-required ng-valid-date ng-touched" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="date" is-open="popup1.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" required="required" style="">&lt;!&ndash; ngIf: isOpen &ndash;&gt;
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-        </p>
-    </div>
-
-    <div class="col-md-6">
-        <p class="input-group">
-            <input type="date" class="form-control ng-pristine ng-valid ng-isolate-scope ng-valid-required ng-touched" uib-datepicker-popup="" ng-model="dt" is-open="true" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" required="required" style="">&lt;!&ndash; ngIf: isOpen &ndash;&gt;
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-        </p>
-    </div>
-</div>-->
-
-

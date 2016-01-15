@@ -28,16 +28,27 @@ presentoApp.controller('presentationsCreateController', ['$scope','$location', '
         }
 
         $scope.submitPresentation = function (formData) {
+            var fromTime = $scope.fromHours + "." + $scope.fromMinutes;
+            formData.fromtime = parseFloat(fromTime);
+
+            var toTime = $scope.toHours + "." + $scope.toMinutes;
+            formData.totime = parseFloat(toTime);
+
+            formData.ondate = formData.ondate.toISOString().slice(0, 10);
 
             presentationsService.createPresentation(formData)
                 .then(function (success) {
                     notifier.success("Презентацията е добавена.");
-                    $location.path('#/presentations');
+                    $location.path('/presentations');
                 },
                 function (error) {
-                    notifier.error(error.message);
+                    notifier.error(error);
                 }
             );
+        };
+
+        $scope.cancel = function(){
+            $location.path('/presentations');
         };
 
         $scope.openCalendar = function(){

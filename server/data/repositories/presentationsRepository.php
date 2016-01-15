@@ -12,7 +12,7 @@ class presentationsRepository extends baseRepository
     }
 
     public function getPresentations(){
-        $sqlQuery = "SELECT p.Id, p.Title, p.Date, p.From, p.To, u.Username FROM presentations p INNER JOIN users u ON p.UserId = u.Id";
+        $sqlQuery = "SELECT p.Id, p.Title, p.OnDate, p.FromTime, p.ToTime, u.Username FROM presentations p INNER JOIN users u ON p.UserId = u.Id";
         $statement = $this->prepareSQL($sqlQuery);
         $statement->execute();
         $presentationsResult = $statement->get_result()->fetch_all();
@@ -23,9 +23,9 @@ class presentationsRepository extends baseRepository
                 array(
                     'id' => $presentation[0],
                     'title' => $presentation[1],
-                    'date' => $presentation[2],
-                    'from' => $presentation[3],
-                    'to' => $presentation[4],
+                    'ondate' => $presentation[2],
+                    'fromtime' => $presentation[3],
+                    'totime' => $presentation[4],
                     'username' => $presentation[5]));
         }
 
@@ -33,7 +33,7 @@ class presentationsRepository extends baseRepository
     }
 
     public function getPresentationById($id){
-        $sqlQuery = "SELECT p.Title, p.Description, p.Date, p.From, p.To, u.Username FROM presentations p INNER JOIN users u ON p.UserId = u.Id WHERE p.Id = $id";
+        $sqlQuery = "SELECT p.Title, p.Description, p.OnDate, p.FromTime, p.ToTime, u.Username FROM presentations p INNER JOIN users u ON p.UserId = u.Id WHERE p.Id = $id";
         $statement = $this->prepareSQL($sqlQuery);
         $statement->execute();
 
@@ -48,13 +48,14 @@ class presentationsRepository extends baseRepository
         $userId = $this->getUserId($presentation["username"]);
         $title = $presentation["title"];
         $description = $presentation["description"];
-        $date = $presentation["date"];
-        $from = $presentation["from"];
-        $to = $presentation["to"];
+        $ondate = $presentation["ondate"];
+        $fromtime = $presentation["fromtime"];
+        $totime = $presentation["totime"];
 
-        $sql = "INSERT INTO presentations (Title, Description, UserId, Date, From, To) VALUES (?,?,?,?,?,?)";
-        $statement = $this->prepareSQL($sql);
-        $statement->bind_param('ssssss', $title, $description, $userId, $date, $from, $to);
+        $sqlQuery = "INSERT INTO presentations (Title, Description, UserId, OnDate, FromTime, ToTime) VALUES (?,?,?,?,?,?)";
+        $statement = $this->prepareSQL($sqlQuery);
+        $statement->bind_param('ssisdd', $title, $description, $userId, $ondate, $fromtime, $totime);
+
         return $statement->execute();
     }
 

@@ -8,10 +8,10 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl',
             var formData = new FormData();
             formData.append('title', presentation.title);
             formData.append('description', presentation.description);
-            formData.append('date', presentation.date);
-            formData.append('from', presentation.from);
-            formData.append('to', presentation.to);
-            //formData.append('image', presentation.username);
+            formData.append('ondate', presentation.ondate);
+            formData.append('fromtime', presentation.fromtime);
+            formData.append('totime', presentation.totime);
+            formData.append('presentationFile', presentation.file);
 
             return formData;
         };
@@ -47,9 +47,9 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl',
             var formData = getPresentationFormData(newPresentation);
 
             $http.post(presentationsApi  + "/create", formData, {
-                    headers: { 'Content-Type': undefined }
-                }
-                )
+                    transformRequest: angular.identity,
+                    headers: {'Content-Type': undefined}
+                })
                 .success(function (response) {
                     deferred.resolve(response);
                 })
