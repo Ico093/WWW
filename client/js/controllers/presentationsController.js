@@ -14,19 +14,6 @@ presentoApp.controller('presentationsController', ['$scope', 'presentationsServi
                notifier.error(err);
             });
 
-        $scope.getPresentationById = function(id){
-            presentationsService.getPresentationById(id)
-                .then(function (response) {
-                    $scope.presentation = response;
-                }, function (err) {
-                    notifier.error(err);
-                });
-        }
-
-        $scope.test = function(){
-            alert('test');
-        }
-
       /*  $interval(function () {
             MessagesService.getFilteredMessages($scope.filters)
                 .then(function (response) {
