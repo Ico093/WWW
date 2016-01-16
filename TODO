@@ -1,7 +1,7 @@
 TODO:
 
 -Paging in presentation page (+ take only presentations for current page from server)
--Finish file upload.
+-Do better file structure when saving file on the server( add username folder)
 -Logout fix.
 -When the presentation is about to be saved in the DB, get current logged user username (remove hardcoded username)
 -Server and client validation.
