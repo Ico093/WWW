@@ -27,6 +27,10 @@ presentoApp.config(function ($routeProvider) {
             templateUrl: 'views/presentations-create.html',
             controller: 'presentationsCreateController'
         })
+        .when('/presentation/edit/:id', {
+            templateUrl: 'views/presentation-edit.html',
+            controller: 'presentationEditController'
+        })
         .otherwise({
             redirectTo: '/'
         });
