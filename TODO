@@ -8,5 +8,6 @@ TODO:
 -Write error messages.
 -Finish presentation details view.
 -Leave feedback of a presentation.
--Update and delete of presentations 
+-Update and delete of presentations.
 -Download file when leaving feedback ???
+-Find out what is sometimes causing the "Unexpected token <" error when creating presentation.
