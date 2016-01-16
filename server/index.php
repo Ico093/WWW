@@ -36,9 +36,14 @@ if (count($components) > 2) {
     $controller = $controller . 'Controller';
 
     if($_SERVER['REQUEST_METHOD'] === 'GET'){
-        $components = explode('?', $method);
-        $method = $components[0];
-        $param = isset($components[1]) ? $components[1] : array();
+        if(isset($components[3])){
+            $components = explode('?', $components[3]);
+            $param = $components[0];
+        }else{
+            $components = explode('?', $method);
+            $method = $components[0];
+            $param = isset($components[1]) ? $components[1] : array();
+        }
     }else{
         $param = isset($components[3]) ? $components[3] : array();
     }
