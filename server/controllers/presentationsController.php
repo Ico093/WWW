@@ -37,14 +37,6 @@ class presentationsController
             $totime = $_POST["totime"];
             $username = "izi";
             /*$username = $_POST["username"];*/
-            $file = $_FILES["presentationFile"];
-
-           if(isset($file)){
-              $errors = $this->uploadFile($file);
-               if($errors.count > 0){
-                   httpHandler::returnError(500, 'Настъпи грешка със записването на файла.');
-               }
-           }
 
             $presentation = array(
                 'title' => $title,
@@ -58,6 +50,48 @@ class presentationsController
                 httpHandler::returnSuccess(200, "Презентацията е добавена.");
             } else {
                 httpHandler::returnError(500, 'Настъпи грешка. Презентацията не може да бъде добавена.');
+            }
+
+            if(!empty($_FILES) && isset($_FILES["presentationFile"])){
+                $file = $_FILES["presentationFile"];
+                $errors = $this->uploadFile($file);
+                if(count($errors) > 0){
+                    httpHandler::returnError(500, 'Настъпи грешка със записването на файла.');
+                }
+            }
+        }
+    }
+
+    public function update($id){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $title = $_POST["title"];
+            $description = $_POST["description"];
+            $ondate = $_POST["ondate"];
+            $fromtime = $_POST["fromtime"];
+            $totime = $_POST["totime"];
+
+            $presentation = array(
+                'title' => $title,
+                'description' => $description,
+                'ondate' => $ondate,
+                'fromtime' => $fromtime,
+                'totime' => $totime);
+
+            if ($this->presentationsRepository->updatePresentation($id, $presentation)) {
+                httpHandler::returnSuccess(200, "Презентацията е обновена.");
+            } else {
+                httpHandler::returnError(500, 'Настъпи грешка. Презентацията не може да бъде обновена.');
+            }
+
+            if(!empty($_FILES) && isset($_FILES["presentationFile"])){
+
+                $file = $_FILES["presentationFile"];
+
+                $errors = $this->uploadFile($file);
+                if(count($errors) > 0){
+                    httpHandler::returnError(500, 'Настъпи грешка със записването на файла.');
+                }
             }
         }
     }

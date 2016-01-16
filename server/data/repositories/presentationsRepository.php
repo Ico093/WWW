@@ -59,6 +59,20 @@ class presentationsRepository extends baseRepository
         return $statement->execute();
     }
 
+    public function updatePresentation($id, $presentation){
+        $title = $presentation["title"];
+        $description = $presentation["description"];
+        $ondate = $presentation["ondate"];
+        $fromtime = $presentation["fromtime"];
+        $totime = $presentation["totime"];
+
+        $sqlQuery = "UPDATE presentations SET Title = ?, Description = ?, OnDate = ?, FromTime = ?, ToTime = ? WHERE Id = ? ";
+        $statement = $this->prepareSQL($sqlQuery);
+        $statement->bind_param('sssddi', $title, $description, $ondate, $fromtime, $totime, $id);
+
+        return $statement->execute();
+    }
+
     private function getUserId($username){
         $sqlQuery = "SELECT Id FROM users WHERE Username = ?";
         $statement = $this->prepareSQL($sqlQuery);

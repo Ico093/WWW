@@ -23,6 +23,10 @@ presentoApp.controller('presentationsController', ['$scope', 'presentationsServi
                 });
         }
 
+        $scope.test = function(){
+            alert('test');
+        }
+
       /*  $interval(function () {
             MessagesService.getFilteredMessages($scope.filters)
                 .then(function (response) {
