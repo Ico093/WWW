@@ -52,21 +52,18 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'a
         };
 
         var updatePresentation = function (id, presentation) {
-            var deferred = $q.defer();
+
             var formData = getPresentationFormData(presentation);
 
-            $http.post(presentationsApi + "/update/" + id, formData, {
-                    transformRequest: angular.identity,
-                    headers: {'Content-Type': undefined}
-                })
-                .success(function (response) {
-                    deferred.resolve(response);
-                })
-                .error(function (error) {
-                    deferred.reject(error);
-                });
+            var options = {
+                method: 'POST',
+                url: presentationsApi + "/update/" + id,
+                data: formData,
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            };
 
-            return deferred.promise;
+            return authenticationService.makeAuthenticatedRequest(options);
         };
 
         return {
