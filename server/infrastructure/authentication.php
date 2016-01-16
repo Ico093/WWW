@@ -36,6 +36,11 @@ class authentication
         return $this->accountsRepository->hasToken($token);
     }
 
+    public function updateExpiryToken($token)
+    {
+        httpHandler::$expires = $this->accountsRepository->updateExpiryToken($token);
+    }
+
     public function getLoggedUser($token)
     {
         return $this->accountsRepository->getUserId($token);

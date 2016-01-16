@@ -17,7 +17,7 @@ presentoApp.controller('presentationsController', ['$scope', 'presentationsServi
         $scope.getPresentationById = function(id){
             presentationsService.getPresentationById(id)
                 .then(function (response) {
-                    $scope.presentation = response;
+                    $scope.presentation = respons;
                 }, function (err) {
                     notifier.error(err);
                 });

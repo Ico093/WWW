@@ -17,6 +17,15 @@ class accountsRepository extends baseRepository
         parent::__construct();
     }
 
+    private function getExpiryDate()
+    {
+        $today = gmdate("D, d M Y H:i:s \G\M\T");
+        $expires = gmdate("D, d M Y H:i:s \G\M\T", strtotime($today . ' + 1 hour'));
+
+        return $expires;
+    }
+
+
     public function registerUser($username, $password)
     {
         $sql = "INSERT INTO users (Username, Password) VALUES (?,?)";
@@ -44,8 +53,7 @@ class accountsRepository extends baseRepository
 
     public function login($userId, $token)
     {
-        $today = gmdate("D, d M Y H:i:s \G\M\T");
-        $expires = gmdate("D, d M Y H:i:s \G\M\T", strtotime($today . ' + 1 hour'));
+        $expires = $this->getExpiryDate();
 
         $sql = "INSERT INTO logins (UserId, Token, Expiration) VALUES(?,?,?)";
         $statement = $this->prepareSQL($sql);
@@ -73,7 +81,7 @@ class accountsRepository extends baseRepository
 
     public function hasToken($token)
     {
-        $sql = "SELECT Id FROM logins WHERE Token=?";
+        $sql = "SELECT Expiration FROM logins WHERE Token=?";
         $statement = $this->prepareSQL($sql);
         $statement->bind_param('s', $token);
 
@@ -81,7 +89,9 @@ class accountsRepository extends baseRepository
             throw new \Exception($this->dbConnection->error, $this->dbConnection->errno);
         }
 
-        return $statement->get_result()->fetch_row()[0] === NULL ? false : true;
+        $row = $statement->get_result()->fetch_row();
+
+        return gmdate("D, d M Y H:i:s \G\M\T")> date_parse($row[0])? false : true;
     }
 
     public function getUserId($token)
@@ -95,5 +105,20 @@ class accountsRepository extends baseRepository
         }
 
         return $statement->get_result()->fetch_row()[0];
+    }
+
+    public function updateExpiryToken($token)
+    {
+        $expires = $this->getExpiryDate();
+
+        $sql = "UPDATE logins SET Expiration=? WHERE Token=?";
+        $statement = $this->prepareSQL($sql);
+        $statement->bind_param('ss', $expires, $token);
+
+        if ($statement->execute() === FALSE) {
+            throw new \Exception($this->dbConnection->error, $this->dbConnection->errno);
+        }
+
+        return $expires;
     }
 }

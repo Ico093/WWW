@@ -32,8 +32,16 @@ $components = explode('/', $request);
 
 if (count($components) > 2) {
     list($api, $controller, $method) = $components;
+
     $controller = $controller . 'Controller';
-    $param = isset($components[3]) ? $components[3] : array();
+
+    if($_SERVER['REQUEST_METHOD'] === 'GET'){
+        $components = explode('?', $method);
+        $method = $components[0];
+        $param = isset($components[1]) ? $components[1] : array();
+    }else{
+        $param = isset($components[3]) ? $components[3] : array();
+    }
 }
 
 // If the controller is found
@@ -42,6 +50,25 @@ if (!isset($api) || $api !== 'api') {
 }
 
 if (isset($controller) && file_exists('controllers/' . $controller . '.php')) {
+    if(strcmp($method,'login')!=0 && strcmp($method,'register')!=0){
+        $authentication = new authentication();
+
+        $token='';
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['token'])){
+            $token=$_POST['token'];
+        }else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['token'])){
+            $token=$_GET['token'];
+        }
+
+        if($authentication->isUserLoggedIn($token)){
+            $authentication->updateExpiryToken($token);
+        }else{
+            httpHandler::returnError(401, "Unauthorized");
+        }
+    }
+
+
     include_once 'controllers/' . $controller . '.php';
 
     $controller_class = 'Controllers\\' . $controller;
@@ -53,7 +80,7 @@ if (isset($controller) && file_exists('controllers/' . $controller . '.php')) {
         call_user_func_array(array($instance, $method), array($param));
     } else {
         // fallback to index
-        echo 'No Such Method';
+        echo $method;
     }
 } else {
     echo 'No Such Controller';

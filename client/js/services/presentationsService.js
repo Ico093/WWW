@@ -1,7 +1,7 @@
 'use strict';
 
-presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl',
-    function ($http, $q, baseServiceUrl) {
+presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'authenticationService',
+    function ($http, $q, baseServiceUrl, authenticationService) {
         var presentationsApi = baseServiceUrl + '/api/presentations';
 
         var getPresentationFormData = function (presentation) {
@@ -16,37 +16,29 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl',
             return formData;
         };
 
-        var getPresentations = function() {
-            var deferred = $q.defer();
+        var getPresentations = function () {
+            var options = {
+                method: 'GET',
+                url: presentationsApi + '/get'
+            };
 
-            $http.get(presentationsApi + '/get')
-                .success(function (response) {
-                    deferred.resolve(response);
-                }).error(function (err) {
-                deferred.reject(err);
-            });
-
-            return deferred.promise;
+            return authenticationService.makeAuthenticatedRequest(options);
         }
 
         var getPresentationById = function (id) {
-            var deferred = $q.defer();
+            var options = {
+                method: 'GET',
+                url: presentationsApi + "/getById/" + id
+            };
 
-            $http.get(presentationsApi + "/getById/" + id)
-                .success(function(response){
-                    deferred.resolve(response);
-                }).error(function(err){
-                deferred.reject(err);
-            });
-
-            return deferred.promise;
+            return authenticationService.makeAuthenticatedRequest(options);
         }
 
         var createPresentation = function (newPresentation) {
             var deferred = $q.defer();
             var formData = getPresentationFormData(newPresentation);
 
-            $http.post(presentationsApi  + "/create", formData, {
+            $http.post(presentationsApi + "/create", formData, {
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
                 })
