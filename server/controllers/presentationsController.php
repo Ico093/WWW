@@ -37,7 +37,14 @@ class presentationsController
             $totime = $_POST["totime"];
             $username = "izi";
             /*$username = $_POST["username"];*/
-            /*$file = $_FILES["presentationFile"];*/
+            $file = $_FILES["presentationFile"];
+
+           if(isset($file)){
+              $errors = $this->uploadFile($file);
+               if($errors.count > 0){
+                   httpHandler::returnError(500, 'Настъпи грешка със записването на файла.');
+               }
+           }
 
             $presentation = array(
                 'title' => $title,
@@ -50,8 +57,31 @@ class presentationsController
             if ($this->presentationsRepository->createPresentation($presentation)) {
                 httpHandler::returnSuccess(200, "Презентацията е добавена.");
             } else {
-                httpHandler::returnError(500, 'Настъпи грешка.');
+                httpHandler::returnError(500, 'Настъпи грешка. Презентацията не може да бъде добавена.');
             }
+        }
+    }
+
+    private function uploadFile($file){
+        $errors= array();
+        $file_name = $file['name'];
+        $file_tmp = $file['tmp_name'];
+        $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+        $extensions = array("ppt","pptx");
+        if(in_array($file_ext,$extensions )=== false){
+            $errors[]="Невалиден формат за презентация.";
+        }
+        if(empty($errors)==true){
+            /*$uploaddir = './uploads/file/'.$current_user->user_login.'/';*/
+            $uploaddir = '../uploads/presentations/';
+            if (!file_exists($uploaddir)) {
+                mkdir($uploaddir, 0777, true);
+            }
+
+            move_uploaded_file($file_tmp, $uploaddir.$file_name);
+        }
+        else{
+          return $errors;
         }
     }
 }
