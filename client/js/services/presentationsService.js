@@ -12,7 +12,7 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'a
             formData.append('fromtime', presentation.fromtime);
             formData.append('totime', presentation.totime);
 
-            if(presentation.file){
+            if (presentation.file) {
                 formData.append('presentationFile', presentation.file);
             }
 
@@ -38,28 +38,24 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'a
         }
 
         var createPresentation = function (newPresentation) {
-            var deferred = $q.defer();
             var formData = getPresentationFormData(newPresentation);
 
-            $http.post(presentationsApi + "/create", formData, {
-                    transformRequest: angular.identity,
-                    headers: {'Content-Type': undefined}
-                })
-                .success(function (response) {
-                    deferred.resolve(response);
-                })
-                .error(function (error) {
-                    deferred.reject(error);
-                });
+            var options = {
+                method: 'POST',
+                url: presentationsApi + "/create",
+                data: formData,
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            };
 
-            return deferred.promise;
+            return authenticationService.makeAuthenticatedRequest(options);
         };
 
-        var updatePresentation = function(id, presentation){
+        var updatePresentation = function (id, presentation) {
             var deferred = $q.defer();
             var formData = getPresentationFormData(presentation);
 
-            $http.post(presentationsApi  + "/update/" + id, formData, {
+            $http.post(presentationsApi + "/update/" + id, formData, {
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
                 })
