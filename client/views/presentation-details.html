@@ -1,14 +1,13 @@
-<div class="container">
+<div class="container ng-cloak" ng-if="presentation !== null && presentation !== undefined">
     <div class="bs-component">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">{{presentation.title}}</div>
-                    <div class="panel-body">
-                       {{presentation.description}}
-                    </div>
-                </div>
-            </div>
+        <div class="jumbotron">
+            <h1>{{presentation.title}}</h1>
+            <p>Описание: {{presentation.description}}</p>
+            <p>Дата: {{presentation.ondate}}</p>
+            <p>Час: {{presentation.fromtime | number: 2}}  - {{presentation.totime | number:2}}</p>
+            <p>Потребител: {{presentation.username}}</p>
+            <p><a class="btn btn-primary btn-lg">Learn more</a></p>
         </div>
+        <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div>
     </div>
 </div>

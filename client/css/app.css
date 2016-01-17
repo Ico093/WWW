@@ -111,6 +111,10 @@
     text-decoration: none;
 }
 
+.jumbotron{
+    background-color: inherit;
+}
+
 #pt-table tbody tr td a{
     text-decoration: none;
     color: #2c3e50;
