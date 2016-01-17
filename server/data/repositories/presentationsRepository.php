@@ -73,6 +73,13 @@ class presentationsRepository extends baseRepository
         return $statement->execute();
     }
 
+    public function deletePresentation($id){
+        $sqlQuery = "DELETE p FROM presentations AS p WHERE p.Id = ?";
+        $statement = $this->prepareSQL($sqlQuery);
+        $statement->bind_param('i', $id);
+        return $statement->execute();
+    }
+
     private function getUserId($username){
         $sqlQuery = "SELECT Id FROM users WHERE Username = ?";
         $statement = $this->prepareSQL($sqlQuery);
