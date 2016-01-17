@@ -38,8 +38,7 @@ class presentationsController
             $ondate = $_POST["ondate"];
             $fromtime = $_POST["fromtime"];
             $totime = $_POST["totime"];
-            $username = "izi";
-            /*$username = $_POST["username"];*/
+            $userId = httpHandler::$userId;
 
             $presentation = array(
                 'title' => $title,
@@ -47,7 +46,7 @@ class presentationsController
                 'ondate' => $ondate,
                 'fromtime' => $fromtime,
                 'totime' => $totime,
-                'username' => $username);
+                'userId' => $userId);
 
             if ($this->presentationsRepository->createPresentation($presentation)) {
                 httpHandler::returnSuccess(200, "Презентацията е добавена.");
@@ -57,7 +56,7 @@ class presentationsController
 
             if (!empty($_FILES) && isset($_FILES["presentationFile"])) {
                 $file = $_FILES["presentationFile"];
-                $errors = $this->uploadFile($file);
+                $errors = $this->uploadFile($title, $file);
                 if (count($errors) > 0) {
                     httpHandler::returnError(500, 'Настъпи грешка със записването на файла.');
                 }
@@ -92,7 +91,7 @@ class presentationsController
 
                 $file = $_FILES["presentationFile"];
 
-                $errors = $this->uploadFile($file, true);
+                $errors = $this->uploadFile($title, $file);
                 if (count($errors) > 0) {
                     httpHandler::returnError(500, 'Настъпи грешка със записването на файла.');
                 }
@@ -100,18 +99,19 @@ class presentationsController
         }
     }
 
-    public function  delete($id){
+    public function delete($id)
+    {
         $isPresentationDeleted = $this->presentationsRepository->deletePresentation($id);
-        if($isPresentationDeleted === true){
+        if ($isPresentationDeleted === true) {
             httpHandler::returnSuccess(200, "Презентацията е изтрита успешно.");
-        }
-        else{
+        } else {
             httpHandler::returnError(500, 'Настъпи грешка при изтриването на презентацията.');
         }
     }
 
-    private function uploadFile($file, $shouldClearDirectory = false){
-        $errors= array();
+    private function uploadFile($presentation, $file)
+    {
+        $errors = array();
         $file_name = $file['name'];
         $file_tmp = $file['tmp_name'];
         $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
@@ -121,19 +121,18 @@ class presentationsController
             array_push($errors, "Невалиден формат за презентация.");
         }
         if (empty($errors) == true) {
-            /*$uploaddir = './uploads/file/'.$current_user->user_login.'/';*/
-            $uploaddir = '../uploads/presentations/';
+            $uploaddir = '../uploads/presentations/' . httpHandler::$username . '/';
+
             if (!file_exists($uploaddir)) {
                 mkdir($uploaddir, 0777, true);
             }
 
-            if ($shouldClearDirectory === true) {
+            if (file_exists($uploaddir . $presentation . '.' . 'ppt'))
+                unlink($uploaddir . $presentation . '.' . 'ppt');
+            if (file_exists($uploaddir . $presentation . '.' . 'pptx'))
+                unlink($uploaddir . $presentation . '.' . 'pptx');
 
-                /* TODO: Make directory path uploads/presentations/currentuser_username/presentation_title
-                       Clear directory before uploading the new presentation in case of updating ($shouldClearDirectory === true);*/
-            }
-
-            if (move_uploaded_file($file_tmp, $uploaddir . $file_name) === false) {
+            if (move_uploaded_file($file_tmp, $uploaddir . $presentation . '.' . $file_ext) === false) {
                 array_push($errors, "Файлът на презентацията не може да бъде качен на сървъра.");
             }
         }

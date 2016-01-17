@@ -53,7 +53,8 @@ class accountsRepository extends baseRepository
 
     public function login($userId, $token)
     {
-        $expires = $this->getExpiryDate();
+        $expiresUI = $this->getExpiryDate();
+        $expires = date("Y-m-d H:i:s", strtotime($expiresUI));
 
         $sql = "INSERT INTO logins (UserId, Token, Expiration) VALUES(?,?,?)";
         $statement = $this->prepareSQL($sql);
@@ -64,7 +65,7 @@ class accountsRepository extends baseRepository
             throw new \Exception($this->dbConnection->error, $this->dbConnection->errno);
         }
 
-        return $expires;
+        return $expiresUI;
     }
 
     public function removeLogin($token)
@@ -91,7 +92,7 @@ class accountsRepository extends baseRepository
 
         $row = $statement->get_result()->fetch_row();
 
-        return gmdate("D, d M Y H:i:s \G\M\T")> date_parse($row[0])? false : true;
+        return gmdate("D, d M Y H:i:s \G\M\T") > date_parse($row[0]) ? false : true;
     }
 
     public function getUserId($token)
@@ -107,9 +108,23 @@ class accountsRepository extends baseRepository
         return $statement->get_result()->fetch_row()[0];
     }
 
+    public function getUsername($token)
+    {
+        $sql = "SELECT u.Username FROM logins l JOIN users u ON l.userid=u.id WHERE l.Token=? LIMIT 1";
+        $statement = $this->prepareSQL($sql);
+        $statement->bind_param('s', $token);
+
+        if ($statement->execute() === FALSE) {
+            throw new \Exception($this->dbConnection->error, $this->dbConnection->errno);
+        }
+
+        return $statement->get_result()->fetch_row()[0];
+    }
+
     public function updateExpiryToken($token)
     {
-        $expires = $this->getExpiryDate();
+        $expiresUI = $this->getExpiryDate();
+        $expires = date("Y-m-d H:i:s", strtotime($expiresUI));
 
         $sql = "UPDATE logins SET Expiration=? WHERE Token=?";
         $statement = $this->prepareSQL($sql);
@@ -119,6 +134,6 @@ class accountsRepository extends baseRepository
             throw new \Exception($this->dbConnection->error, $this->dbConnection->errno);
         }
 
-        return $expires;
+        return $expiresUI;
     }
 }

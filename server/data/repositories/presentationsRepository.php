@@ -45,10 +45,10 @@ class presentationsRepository extends baseRepository
 
     public function createPresentation($presentation){
 
-        $userId = $this->getUserId($presentation["username"]);
+        $userId = $presentation["userId"];
         $title = $presentation["title"];
         $description = $presentation["description"];
-        $ondate = $presentation["ondate"];
+        $ondate = date("Y-m-d H:i:s", strtotime($presentation["ondate"]));
         $fromtime = $presentation["fromtime"];
         $totime = $presentation["totime"];
 
@@ -62,7 +62,7 @@ class presentationsRepository extends baseRepository
     public function updatePresentation($id, $presentation){
         $title = $presentation["title"];
         $description = $presentation["description"];
-        $ondate = $presentation["ondate"];
+        $ondate = date("Y-m-d H:i:s", strtotime($presentation["ondate"]));
         $fromtime = $presentation["fromtime"];
         $totime = $presentation["totime"];
 
@@ -78,13 +78,5 @@ class presentationsRepository extends baseRepository
         $statement = $this->prepareSQL($sqlQuery);
         $statement->bind_param('i', $id);
         return $statement->execute();
-    }
-
-    private function getUserId($username){
-        $sqlQuery = "SELECT Id FROM users WHERE Username = ?";
-        $statement = $this->prepareSQL($sqlQuery);
-        $statement->bind_param('s', $username);
-        $statement->execute();
-        return $statement->get_result()->fetch_row()[0];
     }
 }

@@ -68,11 +68,12 @@ if (isset($controller) && file_exists('controllers/' . $controller . '.php')) {
 
         if($authentication->isUserLoggedIn($token)){
             $authentication->updateExpiryToken($token);
+            httpHandler::$userId = $authentication->getLoggedUserId($token);
+            httpHandler::$username = $authentication->getLoggedUser($token);
         }else{
             httpHandler::returnError(401, "Unauthorized");
         }
     }
-
 
     include_once 'controllers/' . $controller . '.php';
 

@@ -12,6 +12,8 @@ namespace Infrastructure;
 class httpHandler
 {
     public static $expires;
+    public static $userId;
+    public static $username;
 
     public static function returnError($errorNo, $errorMessage = '')
     {

@@ -48,7 +48,7 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'a
                 headers: {'Content-Type': undefined}
             };
 
-            return authenticationService.makeAuthenticatedRequest(options);
+            return authenticationService.makeAuthenticatedRequest(options, true);
         };
 
         var updatePresentation = function (id, presentation) {
@@ -63,7 +63,7 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'a
                 headers: {'Content-Type': undefined}
             };
 
-            return authenticationService.makeAuthenticatedRequest(options);
+            return authenticationService.makeAuthenticatedRequest(options, true);
         };
 
         var deletePresentation = function(id){

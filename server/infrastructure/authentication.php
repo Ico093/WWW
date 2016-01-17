@@ -41,9 +41,14 @@ class authentication
         httpHandler::$expires = $this->accountsRepository->updateExpiryToken($token);
     }
 
-    public function getLoggedUser($token)
+    public function getLoggedUserId($token)
     {
         return $this->accountsRepository->getUserId($token);
+    }
+
+    public function getLoggedUser($token)
+    {
+        return $this->accountsRepository->getUsername($token);
     }
 
     public function generateGUID()
