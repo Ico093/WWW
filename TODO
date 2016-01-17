@@ -6,7 +6,6 @@ TODO:
 -When the presentation is about to be saved in the DB, get current logged user username (remove hardcoded username)
 -Server and client validation.
 -Write error messages.
--Finish presentation details view.
 -Leave feedback of a presentation.
 -Download file when leaving feedback ???
 -When updating presentation, and upload new file -> remove the old one from the directory
