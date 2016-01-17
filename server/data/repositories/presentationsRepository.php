@@ -2,7 +2,9 @@
 
 namespace DataRepositories;
 
-include_once ROOT.'/data/repositories/BaseRepositories/baseRepository.php';
+use Infrastructure\httpHandler;
+
+include_once ROOT . '/data/repositories/BaseRepositories/baseRepository.php';
 
 class presentationsRepository extends baseRepository
 {
@@ -11,14 +13,15 @@ class presentationsRepository extends baseRepository
         parent::__construct();
     }
 
-    public function getPresentations(){
+    public function getPresentations()
+    {
         $sqlQuery = "SELECT p.Id, p.Title, p.OnDate, p.FromTime, p.ToTime, u.Username FROM presentations p INNER JOIN users u ON p.UserId = u.Id";
         $statement = $this->prepareSQL($sqlQuery);
         $statement->execute();
         $presentationsResult = $statement->get_result()->fetch_all();
 
         $presentations = array();
-        foreach($presentationsResult as $presentation){
+        foreach ($presentationsResult as $presentation) {
             array_push($presentations,
                 array(
                     'id' => $presentation[0],
@@ -26,24 +29,28 @@ class presentationsRepository extends baseRepository
                     'ondate' => $presentation[2],
                     'fromtime' => $presentation[3],
                     'totime' => $presentation[4],
-                    'username' => $presentation[5]));
+                    'username' => $presentation[5],
+                    'isMine' => strcmp($presentation[5], httpHandler::$username)===0
+                ));
         }
 
         return $presentations;
     }
 
-    public function getPresentationById($id){
+    public function getPresentationById($id)
+    {
         $sqlQuery = "SELECT p.Title, p.Description, p.OnDate, p.FromTime, p.ToTime, u.Username FROM presentations p INNER JOIN users u ON p.UserId = u.Id WHERE p.Id = $id";
         $statement = $this->prepareSQL($sqlQuery);
         $statement->execute();
 
         $presentationResult = $statement->get_result()->fetch_assoc();
-        $presentation = array_change_key_case($presentationResult, CASE_LOWER);
+        $presentations = array_change_key_case($presentationResult, CASE_LOWER);
 
-        return $presentation;
+        return $presentations;
     }
 
-    public function createPresentation($presentation){
+    public function createPresentation($presentation)
+    {
 
         $userId = $presentation["userId"];
         $title = $presentation["title"];
@@ -59,7 +66,8 @@ class presentationsRepository extends baseRepository
         return $statement->execute();
     }
 
-    public function updatePresentation($id, $presentation){
+    public function updatePresentation($id, $presentation)
+    {
         $title = $presentation["title"];
         $description = $presentation["description"];
         $ondate = date("Y-m-d H:i:s", strtotime($presentation["ondate"]));
@@ -73,14 +81,16 @@ class presentationsRepository extends baseRepository
         return $statement->execute();
     }
 
-    public function deletePresentation($id){
+    public function deletePresentation($id)
+    {
         $sqlQuery = "DELETE p FROM presentations AS p WHERE p.Id = ?";
         $statement = $this->prepareSQL($sqlQuery);
         $statement->bind_param('i', $id);
         return $statement->execute();
     }
 
-    public function getPresentationName($id){
+    public function getPresentationName($id)
+    {
         $sqlQuery = "SELECT Title FROM presentations WHERE Id = ?";
         $statement = $this->prepareSQL($sqlQuery);
         $statement->bind_param('i', $id);

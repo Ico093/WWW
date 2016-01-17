@@ -66,10 +66,10 @@
                     <td class="text-center">{{presentation.fromtime | number: 2}}  - {{presentation.totime | number:2}} </td>
                     <td class="text-center">{{presentation.username}}</td>
                     <td class="text-center">
-                        <a href="#/presentation/edit/{{presentation.id}}" class="btn btn-link">
+                        <a href="#/presentation/edit/{{presentation.id}}" class="btn btn-link" ng-show="{{presentation.isMine}}">
                              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </a>
-                        <a href="#/presentations" ng-click="deletePresentation(presentation)" class="btn btn-link">
+                        <a href="#/presentations" ng-click="deletePresentation(presentation)" class="btn btn-link" ng-show="{{presentation.isMine}}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </a>
                     </td>
