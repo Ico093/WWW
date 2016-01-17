@@ -79,4 +79,13 @@ class presentationsRepository extends baseRepository
         $statement->bind_param('i', $id);
         return $statement->execute();
     }
+
+    public function getPresentationName($id){
+        $sqlQuery = "SELECT Title FROM presentations WHERE Id = ?";
+        $statement = $this->prepareSQL($sqlQuery);
+        $statement->bind_param('i', $id);
+        $statement->execute();
+
+        return $statement->get_result()->fetch_row()[0];
+    }
 }

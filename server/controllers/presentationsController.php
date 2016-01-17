@@ -109,6 +109,30 @@ class presentationsController
         }
     }
 
+    public function downloadFile($id)
+    {
+        $presentation = $this->presentationsRepository->getPresentationName($id);
+
+        $uploaddir = '../uploads/presentations/' . "ico" . '/';
+        $fileExt = '';
+        if (file_exists($uploaddir . $presentation . '.' . 'ppt'))
+            $fileExt = 'ppt';
+        if (file_exists($uploaddir . $presentation . '.' . 'pptx'))
+            $fileExt = 'pptx';
+
+        if (strcmp($fileExt, "") === 0) { // file does not exist
+            httpHandler::returnError(404, "No such file in the system.");
+        } else {
+            header("Cache-Control: public");
+            header("Content-Description: File Transfer");
+            header("Content-Disposition: attachment; filename=$presentation.$fileExt");
+            header("Content-Type: application/$fileExt");
+
+            // read the file from disk
+            readfile($uploaddir . $presentation . '.' . $fileExt);
+        }
+    }
+
     private function uploadFile($presentation, $file)
     {
         $errors = array();

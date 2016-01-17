@@ -6,7 +6,7 @@
             <p>Дата: {{presentation.ondate}}</p>
             <p>Час: {{presentation.fromtime | number: 2}}  - {{presentation.totime | number:2}}</p>
             <p>Потребител: {{presentation.username}}</p>
-            <p><a class="btn btn-primary btn-lg">Свали</a></p>
+            <p><a class="btn btn-primary btn-lg" ng-click="downloadPresentation(presentationId)">Свали</a></p>
             <p><label for="presentationFeedback" class="col-lg-2 control-label">Остави коментар</label></p>
             <div clas="row">
                 <div class="col-lg-6">

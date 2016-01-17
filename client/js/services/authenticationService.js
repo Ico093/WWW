@@ -106,7 +106,8 @@ presentoApp.factory('authenticationService', ['$http', '$location', '$q', 'baseS
             login: login,
             register: register,
             logout: logout,
-            makeAuthenticatedRequest: makeAuthenticatedRequest
+            makeAuthenticatedRequest: makeAuthenticatedRequest,
+            getCookie:getCookie
         };
     }
 

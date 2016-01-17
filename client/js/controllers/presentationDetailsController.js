@@ -31,4 +31,9 @@ presentoApp.controller('presentationDetailsController', ['$scope', '$routeParams
             }
         };
 
+        function downloadPresentation(id) {
+            presentationsService.downloadPresentation(id);
+        };
+
+        $scope.downloadPresentation = downloadPresentation;
     }])

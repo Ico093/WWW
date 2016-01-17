@@ -66,7 +66,7 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'a
             return authenticationService.makeAuthenticatedRequest(options, true);
         };
 
-        var deletePresentation = function(id){
+        var deletePresentation = function (id) {
             var options = {
                 method: 'DELETE',
                 url: presentationsApi + "/delete/" + id,
@@ -75,11 +75,16 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'a
             return authenticationService.makeAuthenticatedRequest(options);
         };
 
+        function downloadPresentation(id) {
+            window.location = presentationsApi + "/downloadFile/" + id + "?token=" + authenticationService.getCookie("auth_token");
+        }
+
         return {
             getPresentations: getPresentations,
             getPresentationById: getPresentationById,
             createPresentation: createPresentation,
             updatePresentation: updatePresentation,
-            deletePresentation: deletePresentation
+            deletePresentation: deletePresentation,
+            downloadPresentation:downloadPresentation
         };
     }]);
