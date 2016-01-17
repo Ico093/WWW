@@ -100,9 +100,18 @@ class presentationsController
         }
     }
 
-    private function uploadFile($file, $shouldClearDirectory = false)
-    {
-        $errors = array();
+    public function  delete($id){
+        $isPresentationDeleted = $this->presentationsRepository->deletePresentation($id);
+        if($isPresentationDeleted === true){
+            httpHandler::returnSuccess(200, "Презентацията е изтрита успешно.");
+        }
+        else{
+            httpHandler::returnError(500, 'Настъпи грешка при изтриването на презентацията.');
+        }
+    }
+
+    private function uploadFile($file, $shouldClearDirectory = false){
+        $errors= array();
         $file_name = $file['name'];
         $file_tmp = $file['tmp_name'];
         $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));

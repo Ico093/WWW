@@ -18,29 +18,29 @@ class httpHandler
         http_response_code($errorNo);
         header('Content-Type: application/json; charset=UTF-8');
 
-        $responce = array();
+        $response = array();
 
         if (isset($expires)) {
-            $responce['expires'] = $expires;
+            $response['expires'] = $expires;
         }
 
         if (isset($errorMessage)) {
-            $responce['errorMessage'] = $errorMessage;
+            $response['errorMessage'] = $errorMessage;
         }
 
-        die(json_encode($responce));
+        die(json_encode($response));
     }
 
     public static function returnSuccess($data)
     {
-        $responce = array('data'=>$data);
+        $response = array('data'=>$data);
 
         if (isset(self::$expires)) {
-            $responce['expires'] = self::$expires;
+            $response['expires'] = self::$expires;
         }
 
         http_response_code(200);
         header('Content-Type: application/json; charset=UTF-8');
-        echo json_encode($responce);
+        echo json_encode($response);
     }
 }

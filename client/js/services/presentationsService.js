@@ -66,10 +66,20 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'a
             return authenticationService.makeAuthenticatedRequest(options);
         };
 
+        var deletePresentation = function(id){
+            var options = {
+                method: 'DELETE',
+                url: presentationsApi + "/delete/" + id,
+            };
+
+            return authenticationService.makeAuthenticatedRequest(options);
+        };
+
         return {
             getPresentations: getPresentations,
             getPresentationById: getPresentationById,
             createPresentation: createPresentation,
-            updatePresentation: updatePresentation
+            updatePresentation: updatePresentation,
+            deletePresentation: deletePresentation
         };
     }]);

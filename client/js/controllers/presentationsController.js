@@ -1,7 +1,7 @@
 'use strict';
 
-presentoApp.controller('presentationsController', ['$scope', 'presentationsService', 'notifier',
-    function ($scope, presentationsService, notifier) {
+presentoApp.controller('presentationsController', ['$scope', '$interval', '$location', 'presentationsService', 'notifier',
+    function ($scope, $interval, $location, presentationsService, notifier) {
 
         $scope.sortBy = 'title';
         $scope.sortReverse  = false;
@@ -14,22 +14,29 @@ presentoApp.controller('presentationsController', ['$scope', 'presentationsServi
                notifier.error(err);
             });
 
-        $scope.getPresentationById = function(id){
-            presentationsService.getPresentationById(id)
+        $scope.deletePresentation = function(presentation){
+            var id = presentation.id;
+            presentationsService.deletePresentation(id)
                 .then(function (response) {
-                    $scope.presentation = response;
+                    presentationsService.getPresentations()
+                        .then(function (presentations) {
+                            $scope.presentations = presentations;
+                        }, function (err) {
+                            notifier.error(err);
+                        });
+                    notifier.success('Презентацията е изтрита успешно.');
                 }, function (err) {
                     notifier.error(err);
                 });
-        }
+        };
 
-      /*  $interval(function () {
-            MessagesService.getFilteredMessages($scope.filters)
+    /*  $interval(function () {
+          presentationsService.getPresentations()
                 .then(function (response) {
-                    $scope.messages = response;
+                    $scope.presentations = response;
                 }, function (err) {
-                    notifier.error('Messages could not be loaded.');
+                    notifier.error('Възникна проблем със зареждането на презентациите.');
                 });
-        }, 30 * 1000);*/
+        }, 5000);*/
 
     }])
