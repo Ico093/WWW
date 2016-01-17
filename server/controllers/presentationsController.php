@@ -4,17 +4,21 @@ namespace Controllers;
 
 include_once ROOT . "/infrastructure/httpHandler.php";
 include_once ROOT . "/data/repositories/presentationsRepository.php";
+include_once ROOT . "/data/repositories/feedbacksRepository.php";
 
+use DataRepositories\feedbacksRepository;
 use Infrastructure\httpHandler;
 use DataRepositories\presentationsRepository;
 
 class presentationsController
 {
     private $presentationsRepository;
+    private $feedbacksRepository;
 
     public function __construct()
     {
         $this->presentationsRepository = new presentationsRepository();
+        $this->feedbacksRepository = new feedbacksRepository();
     }
 
     public function get()
@@ -26,6 +30,8 @@ class presentationsController
     public function getById($id)
     {
         $presentation = $this->presentationsRepository->getPresentationById($id);
+        $feedbacks = $this->feedbacksRepository->getFeedbacksByPresentationId($id);
+        $presentation['feedbacks'] = $feedbacks;
         httpHandler::returnSuccess($presentation);
     }
 
