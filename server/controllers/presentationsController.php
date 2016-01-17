@@ -88,7 +88,7 @@ class presentationsController
 
                 $file = $_FILES["presentationFile"];
 
-                $errors = $this->uploadFile($file);
+                $errors = $this->uploadFile($file, true);
                 if(count($errors) > 0){
                     httpHandler::returnError(500, 'Настъпи грешка със записването на файла.');
                 }
@@ -96,14 +96,15 @@ class presentationsController
         }
     }
 
-    private function uploadFile($file){
+    private function uploadFile($file, $shouldClearDirectory = false){
         $errors= array();
         $file_name = $file['name'];
         $file_tmp = $file['tmp_name'];
         $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
         $extensions = array("ppt","pptx");
         if(in_array($file_ext,$extensions )=== false){
-            $errors[]="Невалиден формат за презентация.";
+            array_push($errors, "Невалиден формат за презентация.");
         }
         if(empty($errors)==true){
             /*$uploaddir = './uploads/file/'.$current_user->user_login.'/';*/
@@ -112,10 +113,17 @@ class presentationsController
                 mkdir($uploaddir, 0777, true);
             }
 
-            move_uploaded_file($file_tmp, $uploaddir.$file_name);
+            if($shouldClearDirectory === true){
+
+               /* TODO: Make directory path uploads/presentations/currentuser_username/presentation_title
+                      Clear directory before uploading the new presentation in case of updating ($shouldClearDirectory === true);*/
+            }
+
+            if(move_uploaded_file($file_tmp, $uploaddir.$file_name) === false){
+                array_push($errors, "Файлът на презентацията не може да бъде качен на сървъра.");
+            }
         }
-        else{
+
           return $errors;
-        }
     }
 }
