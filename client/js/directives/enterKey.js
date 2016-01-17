@@ -2,7 +2,6 @@ presentoApp.directive('enterKey', function () {
     return {
         restrict: 'A',
         scope: {
-            feedback: '=',
             callback: '&',
         },
         link: function (scope, elem, attrs) {

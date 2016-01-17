@@ -13,22 +13,22 @@ presentoApp.controller('presentationDetailsController', ['$scope', '$routeParams
                 notifier.error(err);
             });
 
-        $scope.submitFeedback = function (feedbackContent) {
-           /* if ($scope.feedback !== '') {*/
+        $scope.submitFeedback = function (feedback, presentationUserName, presentationId) {
+            if (feedback !== '') {
 
-                var feedback = {
-                    username: $scope.presentation.username,
-                    presentationId: $scope.presentationId,
-                    content: feedbackContent
+                var feedbackObject = {
+                    username: presentationUserName,
+                    presentationId: presentationId,
+                    content: feedback
                 }
 
-                feedbacksService.submitFeedback(feedback)
+                feedbacksService.submitFeedback(feedbackObject)
                     .then(function (response) {
-                        notifier.success('Коментарът беше добавен успешно.')
+                        notifier.success('Коментарът беше добавен успешно.');
                     }, function (err) {
                         notifier.error(err);
                     });
-           /* }*/
+            }
         };
 
     }])
