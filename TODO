@@ -6,7 +6,7 @@ TODO:
 -Server and client validation.
 -Write error messages.
 -Leave feedback of a presentation.
--Download file when leaving feedback ???
--When updating presentation, and upload new file -> remove the old one from the directory
+-Confirmation when deleting presentation.
 -Download file when leaving feedback ??? -Ico0
 -When updating presentation, and upload new file -> remove the old one from the directory -Ico0
+-Delete and update only my presentations
