@@ -17,17 +17,20 @@ class presentationsController
         $this->presentationsRepository = new presentationsRepository();
     }
 
-    public function  get(){
+    public function get()
+    {
         $presentations = $this->presentationsRepository->getPresentations();
         httpHandler::returnSuccess($presentations);
     }
 
-    public function getById($id){
+    public function getById($id)
+    {
         $presentation = $this->presentationsRepository->getPresentationById($id);
         httpHandler::returnSuccess($presentation);
     }
 
-    public function create() {
+    public function create()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $title = $_POST["title"];
@@ -52,17 +55,18 @@ class presentationsController
                 httpHandler::returnError(500, 'Настъпи грешка. Презентацията не може да бъде добавена.');
             }
 
-            if(!empty($_FILES) && isset($_FILES["presentationFile"])){
+            if (!empty($_FILES) && isset($_FILES["presentationFile"])) {
                 $file = $_FILES["presentationFile"];
                 $errors = $this->uploadFile($file);
-                if(count($errors) > 0){
+                if (count($errors) > 0) {
                     httpHandler::returnError(500, 'Настъпи грешка със записването на файла.');
                 }
             }
         }
     }
 
-    public function update($id){
+    public function update($id)
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $title = $_POST["title"];
@@ -84,46 +88,47 @@ class presentationsController
                 httpHandler::returnError(500, 'Настъпи грешка. Презентацията не може да бъде обновена.');
             }
 
-            if(!empty($_FILES) && isset($_FILES["presentationFile"])){
+            if (!empty($_FILES) && isset($_FILES["presentationFile"])) {
 
                 $file = $_FILES["presentationFile"];
 
                 $errors = $this->uploadFile($file, true);
-                if(count($errors) > 0){
+                if (count($errors) > 0) {
                     httpHandler::returnError(500, 'Настъпи грешка със записването на файла.');
                 }
             }
         }
     }
 
-    private function uploadFile($file, $shouldClearDirectory = false){
-        $errors= array();
+    private function uploadFile($file, $shouldClearDirectory = false)
+    {
+        $errors = array();
         $file_name = $file['name'];
         $file_tmp = $file['tmp_name'];
         $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
-        $extensions = array("ppt","pptx");
-        if(in_array($file_ext,$extensions )=== false){
+        $extensions = array("ppt", "pptx");
+        if (in_array($file_ext, $extensions) === false) {
             array_push($errors, "Невалиден формат за презентация.");
         }
-        if(empty($errors)==true){
+        if (empty($errors) == true) {
             /*$uploaddir = './uploads/file/'.$current_user->user_login.'/';*/
             $uploaddir = '../uploads/presentations/';
             if (!file_exists($uploaddir)) {
                 mkdir($uploaddir, 0777, true);
             }
 
-            if($shouldClearDirectory === true){
+            if ($shouldClearDirectory === true) {
 
-               /* TODO: Make directory path uploads/presentations/currentuser_username/presentation_title
-                      Clear directory before uploading the new presentation in case of updating ($shouldClearDirectory === true);*/
+                /* TODO: Make directory path uploads/presentations/currentuser_username/presentation_title
+                       Clear directory before uploading the new presentation in case of updating ($shouldClearDirectory === true);*/
             }
 
-            if(move_uploaded_file($file_tmp, $uploaddir.$file_name) === false){
+            if (move_uploaded_file($file_tmp, $uploaddir . $file_name) === false) {
                 array_push($errors, "Файлът на презентацията не може да бъде качен на сървъра.");
             }
         }
 
-          return $errors;
+        return $errors;
     }
 }

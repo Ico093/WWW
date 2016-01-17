@@ -35,9 +35,12 @@ presentoApp.factory('authenticationService', ['$http', '$location', '$q', 'baseS
         }
 
         function logout() {
-            var token = getCookie("token");
+            var token = getCookie("auth_token");
 
             $http.post(authenticationApi + '/logout', {token: token});
+
+            document.cookie = 'auth_token=';
+            document.cookie = 'auth_expires=';
         }
 
         function makeAuthenticatedRequest(options) {
