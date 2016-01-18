@@ -119,7 +119,7 @@ class presentationsController
     {
         $presentation = $this->presentationsRepository->getPresentationName($id);
 
-        $uploaddir = '../uploads/presentations/' . "ico" . '/';
+        $uploaddir = '../uploads/presentations/' . httpHandler::$username . '/';
         $fileExt = '';
         if (file_exists($uploaddir . $presentation . '.' . 'ppt'))
             $fileExt = 'ppt';

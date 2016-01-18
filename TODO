@@ -1,6 +1,4 @@
 TODO:
 
-
 -Server and client validation.
 -When trying to download presentation file and there is no such file, show info with notifier!
--Remove hardcoded ico uploaddir when downloading file
