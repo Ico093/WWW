@@ -2,5 +2,4 @@ TODO:
 
 -Paging in presentation page (+ take only presentations for current page from server)
 -Server and client validation.
--Fix problem with token not sent on POST request as JSON. Discuss with Ico Izi's solution.
 -When trying to download presentation file and there is no such file, show info with notifier!
