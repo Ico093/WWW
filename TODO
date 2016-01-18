@@ -2,5 +2,5 @@ TODO:
 
 
 -Server and client validation.
--List all feedbacks on presentation detailes view.
--Confirmation when deleting presentation.
+-When trying to download presentation file and there is no such file, show info with notifier!
+-Remove hardcoded ico uploaddir when downloading file

@@ -5,12 +5,18 @@
             <p>Описание: {{presentation.description}}</p>
             <p>Дата: {{presentation.ondate}}</p>
             <p>Час: {{presentation.fromtime | number: 2}}  - {{presentation.totime | number:2}}</p>
-            <p>Потребител: {{presentation.username}}</p>
+            <p>Изготвил: {{presentation.username}}</p>
             <p><a class="btn btn-primary btn-lg" ng-click="downloadPresentation(presentationId)">Свали</a></p>
+            <div class="panel panel-default" ng-repeat="feedback in presentation.feedbacks" style="width:300px;">
+                <div class="panel-body">
+                    <p>{{feedback.content}}</p>
+                    <span>от <em>{{presentation.username}}</em></span>
+                </div>
+            </div>
             <p><label for="presentationFeedback" class="col-lg-2 control-label">Остави коментар</label></p>
             <div clas="row">
                 <div class="col-lg-6">
-                    <textarea class="form-control" name="presentationFeedback" rows="4" id="presentationFeedback" ng-model="feedback" enter-key callback="submitFeedback(feedback, presentation.username, presentationId)" ng-maxlength="200"></textarea>
+                    <textarea class="form-control" name="presentationFeedback" rows="4" id="presentationFeedback" ng-model="feedback" enter-key callback="submitFeedback(feedback, presentationId)" ng-maxlength="200"></textarea>
                 </div>
             </div>
         </div>

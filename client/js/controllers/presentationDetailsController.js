@@ -13,11 +13,10 @@ presentoApp.controller('presentationDetailsController', ['$scope', '$routeParams
                 notifier.error(err);
             });
 
-        $scope.submitFeedback = function (feedback, presentationUserName, presentationId) {
+        $scope.submitFeedback = function (feedback, presentationId) {
             if (feedback !== '') {
 
                 var feedbackObject = {
-                    username: presentationUserName,
                     presentationId: presentationId,
                     content: feedback
                 }
@@ -25,6 +24,12 @@ presentoApp.controller('presentationDetailsController', ['$scope', '$routeParams
                 feedbacksService.submitFeedback(feedbackObject)
                     .then(function (response) {
                         notifier.success('Коментарът беше добавен успешно.');
+                        presentationsService.getPresentationById($scope.presentationId)
+                            .then(function (response) {
+                                $scope.presentation = response;
+                            }, function (err) {
+                                notifier.error(err);
+                            });
                     }, function (err) {
                         notifier.error(err);
                     });
