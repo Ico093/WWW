@@ -1,7 +1,6 @@
 TODO:
 
--Paging in presentation page (+ take only presentations for current page from server)
+
 -Server and client validation.
--Write error messages.
 -List all feedbacks on presentation detailes view.
 -Confirmation when deleting presentation.

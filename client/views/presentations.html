@@ -8,7 +8,8 @@
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                    <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="Търси..." ng-model="searchFilter">
+                    <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="Търси..."
+                           ng-model="searchFilter">
                 </div>
             </div>
         </div>
@@ -58,24 +59,35 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat = "presentation in presentations | orderBy:sortBy:sortReverse | filter:searchFilter ">
+                <tr ng-repeat="presentation in filteredPresentations | orderBy:sortBy:sortReverse | filter:searchFilter ">
                     <td class="text-center">
                         <a href="#/presentation/{{presentation.id}}"> {{presentation.title}}</a>
                     </td>
                     <td class="text-center">{{presentation.ondate}}</td>
-                    <td class="text-center">{{presentation.fromtime | number: 2}}  - {{presentation.totime | number:2}} </td>
+                    <td class="text-center">{{presentation.fromtime | number: 2}} - {{presentation.totime | number:2}}
+                    </td>
                     <td class="text-center">{{presentation.username}}</td>
                     <td class="text-center">
-                        <a href="#/presentation/edit/{{presentation.id}}" class="btn btn-link" ng-show="{{presentation.isMine}}">
-                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        <a href="#/presentation/edit/{{presentation.id}}" class="btn btn-link"
+                           ng-show="{{presentation.isMine}}">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                         </a>
-                        <a href="#/presentations" ng-click="deletePresentation(presentation)" class="btn btn-link" ng-show="{{presentation.isMine}}">
+                        <a href="#/presentations" ng-click="deletePresentation(presentation)" class="btn btn-link"
+                           ng-show="{{presentation.isMine}}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </a>
                     </td>
                 </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div ng-show="isLoaded">
+            <uib-pagination total-items="presentations.length"
+                            ng-model="currentPage"
+                            max-size="maxSize"
+                            boundary-links="true">
+            </uib-pagination>
         </div>
     </div>
 </div>
