@@ -110,7 +110,7 @@ class accountsRepository extends baseRepository
 
     public function getUsername($token)
     {
-        $sql = "SELECT u.Username FROM logins l JOIN users u ON l.userid=u.id WHERE l.Token=? LIMIT 1";
+        $sql = "SELECT u.Username FROM logins l JOIN users u ON l.userId = u.Id WHERE l.Token=? LIMIT 1";
         $statement = $this->prepareSQL($sql);
         $statement->bind_param('s', $token);
 

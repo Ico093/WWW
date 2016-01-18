@@ -7,6 +7,9 @@ var presentoApp = angular.module("presentoApp", ['ngRoute', 'ui.bootstrap', 'ui.
 
 presentoApp.config(function ($routeProvider) {
     $routeProvider
+        .when('/', {
+            templateUrl: 'views/home.html'
+        })
         .when('/register', {
             templateUrl: 'views/register.html',
             controller: 'authenticationController'

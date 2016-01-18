@@ -19,14 +19,9 @@ class feedbacksController
 
     public function submit(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $postdata = file_get_contents("php://input");
-            $request = json_decode($postdata);
+            $content = $_POST["content"];
+            $presentationId = $_POST["presentationId"];
             $userId = httpHandler::$userId;
-
-            var_dump( $userId);
-
-            $presentationId = $request->presentationId;
-            $content = $request->content;
 
             if($this->feedbacksRepository->submitFeedback($presentationId, $userId, $content) === true){
                 httpHandler::returnSuccess(200, "Коментарът е добавен.");
@@ -38,10 +33,5 @@ class feedbacksController
         else {
             httpHandler::returnError(405);
         }
-    }
-
-    public function getFeedbacksByPresentationId($presentationId){
-        $feedbacks = $this->feedbacksRepository->getFeedbacksByPresentationId($presentationId);
-        httpHandler::returnSuccess($feedbacks);
     }
 }

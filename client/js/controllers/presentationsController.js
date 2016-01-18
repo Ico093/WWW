@@ -55,4 +55,13 @@ presentoApp.controller('presentationsController', ['$scope', '$interval', '$loca
             return index;
         }
 
+        $interval(function () {
+            presentationsService.getPresentations()
+                .then(function (response) {
+                    $scope.presentations = response;
+                }, function (err) {
+                    notifier.error('Възникна проблем със зареждането на презентациите.');
+                });
+        }, 30 * 1000);
+
     }])

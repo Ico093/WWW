@@ -1,11 +1,12 @@
 /*Logo*/
 
-#logo{
+#logo {
     font-size: 20px;
     font-weight: normal;
     font-family: 'Rouge Script', cursive;
     text-shadow: 1px 1px 2px #082b34;
 }
+
 /*Login*/
 /*    --------------------------------------------------
 	:: Login Section
@@ -14,10 +15,12 @@
 #login {
     padding-top: 50px
 }
+
 #login .form-wrap {
     width: 30%;
     margin: 0 auto;
 }
+
 #login h1 {
     color: #1fa67b;
     font-size: 18px;
@@ -25,9 +28,11 @@
     font-weight: bold;
     padding-bottom: 20px;
 }
+
 #login .form-group {
     margin-bottom: 25px;
 }
+
 #login .checkbox {
     margin-bottom: 20px;
     position: relative;
@@ -37,6 +42,7 @@
     -o-user-select: none;
     user-select: none;
 }
+
 #login .checkbox.show:before {
     content: '✔';
     color: #1fa67b;
@@ -45,6 +51,7 @@
     position: absolute;
     pointer-events: none;
 }
+
 #login .checkbox .character-checkbox {
     width: 25px;
     height: 25px;
@@ -54,15 +61,18 @@
     vertical-align: middle;
     display: inline-block;
 }
+
 #login .checkbox .label {
     color: #6d6d6d;
     font-size: 13px;
     font-weight: normal;
 }
+
 #login .btn.btn-custom {
     font-size: 14px;
     margin-bottom: 20px;
 }
+
 #login .forget {
     font-size: 13px;
     text-align: center;
@@ -75,10 +85,12 @@
 .form-control {
     color: #212121;
 }
+
 .btn-custom {
     color: #fff;
     background-color: #1fa67b;
 }
+
 .btn-custom:hover,
 .btn-custom:focus {
     color: #fff;
@@ -92,9 +104,11 @@
     font-size: 12px;
     text-align: center;
 }
+
 #footer p {
     margin-bottom: 0;
 }
+
 #footer a {
     color: inherit;
 }
@@ -103,19 +117,28 @@
     :: Other styles
 	-------------------------------------------------- */
 
-#main-container{
-    margin-top:60px;
+#main-container {
+    margin-top: 60px;
 }
 
-#pt-table thead tr td a{
+#main-img-container img {
+    width: 50%;
+    height: 50%;
+}
+
+#fb-container{
+    width: 300px;
+}
+
+#pt-table thead tr td a {
     text-decoration: none;
 }
 
-.jumbotron{
+.jumbotron {
     background-color: inherit;
 }
 
-#pt-table tbody tr td a{
+#pt-table tbody tr td a {
     text-decoration: none;
     color: #2c3e50;
 }
@@ -124,30 +147,32 @@
     display: none !important;
 }
 
-
 /*Registration*/
-.centered-form{
+.centered-form {
     margin-top: 60px;
 }
 
-.centered-form .panel{
+.centered-form .panel {
     background: rgba(255, 255, 255, 0.8);
     box-shadow: rgba(0, 0, 0, 0.3) 10px 10px 10px;
 }
 
 /* Not Need */
 @import url(http://fonts.googleapis.com/css?family=Roboto:500);
-body { background-color: rgb(230, 235, 240); }
-
+body {
+    background-color: rgb(230, 235, 240);
+}
 
 /* Basic Style */
 .form-group {
     position: relative;
 }
+
 .form-group [data-toggle="floatLabel"] {
     height: 44px;
     padding-top: 16px;
 }
+
 .form-group [data-toggle="floatLabel"] + label {
     font-size: 12px;
     left: 12px;
@@ -156,6 +181,7 @@ body { background-color: rgb(230, 235, 240); }
     top: 3px;
     transition: all 0.3s ease-in-out;
 }
+
 .form-group [data-toggle="floatLabel"]:required + label {
     color: #09A0DB;
 }
@@ -164,25 +190,29 @@ body { background-color: rgb(230, 235, 240); }
 .form-group.form-group-textarea {
     background-color: rgb(255, 255, 255);
     border-radius: 1px;
-    margin: 20px 15px ;
+    margin: 20px 15px;
     padding: 10px 0px 2px;
     position: relative;
 }
+
 .form-group.form-group-textarea textarea {
     height: 34px;
     resize: none;
 }
+
 .form-group.form-group-textarea label {
     color: rgb(160, 160, 160);
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
     font-weight: 500;
 }
+
 .form-group.form-group-textarea .form-control {
     border-radius: 0px;
     border-width: 0px;
     box-shadow: none;
 }
+
 .form-group.form-group-textarea [data-toggle="floatLabel"] + label {
     top: 5px;
 }
@@ -191,6 +221,7 @@ body { background-color: rgb(230, 235, 240); }
 .form-group [data-toggle="floatLabel"][data-value=""] {
     padding-top: 6px;
 }
+
 .form-group [data-toggle="floatLabel"][data-value=""] + label {
     opacity: 0;
     top: 18px;

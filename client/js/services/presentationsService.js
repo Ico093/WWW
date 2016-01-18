@@ -76,7 +76,22 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'a
         };
 
         function downloadPresentation(id) {
-            window.location = presentationsApi + "/downloadFile/" + id + "?token=" + authenticationService.getCookie("auth_token");
+            var deferred = $q.defer();
+            var options = {
+                method: 'GET',
+                url: presentationsApi + "/downloadFile/" + id + "?token=" + authenticationService.getCookie("auth_token")
+            };
+
+            $http(options)
+                .success(function (response) {
+                    window.location = presentationsApi + "/downloadFile/" + id + "?token=" + authenticationService.getCookie("auth_token");
+                    deferred.resolve(response);
+                })
+                .error(function (err) {
+                    deferred.reject(err);
+                });
+
+            return deferred.promise;
         }
 
         return {
@@ -85,6 +100,6 @@ presentoApp.factory('presentationsService', ['$http', '$q', 'baseServiceUrl', 'a
             createPresentation: createPresentation,
             updatePresentation: updatePresentation,
             deletePresentation: deletePresentation,
-            downloadPresentation:downloadPresentation
+            downloadPresentation: downloadPresentation
         };
     }]);

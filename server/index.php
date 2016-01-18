@@ -63,14 +63,6 @@ if (isset($controller) && file_exists('controllers/' . $controller . '.php')) {
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['token'])){
             $token=$_POST['token'];
         }
-       /* else if($_SERVER['REQUEST_METHOD'] === 'POST'){
-            $postdata = file_get_contents("php://input");
-            if(isset($postdata)){
-                $request = json_decode($postdata);
-                $requestToken = $request->token.slice(1, -1);
-                $token = $requestToken;
-            }
-        }*/
         else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['token'])){
             $token=$_GET['token'];
         }

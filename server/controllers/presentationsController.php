@@ -127,8 +127,9 @@ class presentationsController
             $fileExt = 'pptx';
 
         if (strcmp($fileExt, "") === 0) { // file does not exist
-            httpHandler::returnError(404, "No such file in the system.");
-        } else {
+            httpHandler::returnError(404, "Няма качен файл за тази презентация.");
+        }
+        else {
             header("Cache-Control: public");
             header("Content-Description: File Transfer");
             header("Content-Disposition: attachment; filename=$presentation.$fileExt");

@@ -93,4 +93,9 @@ class accountsController
             }
         }
     }
+
+    public function getUsername($token){
+        $username= $this->accountsRepository->getUsername($token);
+        httpHandler::returnSuccess($username);
+    }
 }

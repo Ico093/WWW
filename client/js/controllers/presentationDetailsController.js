@@ -1,7 +1,8 @@
 'use strict';
 
-presentoApp.controller('presentationDetailsController', ['$scope', '$routeParams', 'presentationsService', 'feedbacksService', 'notifier',
-    function ($scope, $routeParams, presentationsService, feedbacksService, notifier) {
+presentoApp.controller('presentationDetailsController', ['$scope', '$routeParams', 'presentationsService',
+    'feedbacksService', 'authenticationService', 'notifier',
+    function ($scope, $routeParams, presentationsService, feedbacksService, authenticationService, notifier) {
 
         $scope.presentationId = $routeParams.id;
         $scope.feedback = '';
@@ -19,14 +20,18 @@ presentoApp.controller('presentationDetailsController', ['$scope', '$routeParams
                 var feedbackObject = {
                     presentationId: presentationId,
                     content: feedback
-                }
+                };
+
+                $("#presentationFeedbackTB").val('');
 
                 feedbacksService.submitFeedback(feedbackObject)
                     .then(function (response) {
                         notifier.success('Коментарът беше добавен успешно.');
-                        presentationsService.getPresentationById($scope.presentationId)
+                        authenticationService.getUsername()
                             .then(function (response) {
-                                $scope.presentation = response;
+                                var username = response;
+                                var feedback = {content: feedbackObject.content, username: username};
+                                $scope.presentation.feedbacks.push(feedback);
                             }, function (err) {
                                 notifier.error(err);
                             });
@@ -36,9 +41,11 @@ presentoApp.controller('presentationDetailsController', ['$scope', '$routeParams
             }
         };
 
-        function downloadPresentation(id) {
-            presentationsService.downloadPresentation(id);
+        $scope.downloadPresentation = function (id) {
+            presentationsService.downloadPresentation(id)
+                .then(function (response) {
+                }, function (err) {
+                    notifier.info(err.errorMessage);
+                });
         };
-
-        $scope.downloadPresentation = downloadPresentation;
     }])

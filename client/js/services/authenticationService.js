@@ -89,6 +89,22 @@ presentoApp.factory('authenticationService', ['$http', '$location', '$q', 'baseS
             return token !== "" && Date.parse(expires) > Date.now();
         }
 
+        function getUsername() {
+            var token = getCookie("auth_token");
+
+            var deferred = $q.defer();
+
+            $http.get(authenticationApi + '/getUsername/' + token)
+                .success(function (response) {
+                    deferred.resolve(response.data);
+                })
+                .error(function (err, status) {
+                    deferred.reject(err);
+                });
+
+            return deferred.promise;
+        }
+
         function getCookie(c_name) {
             var i, x, y, ARRcookies = document.cookie.split(";");
 
@@ -107,9 +123,8 @@ presentoApp.factory('authenticationService', ['$http', '$location', '$q', 'baseS
             register: register,
             logout: logout,
             makeAuthenticatedRequest: makeAuthenticatedRequest,
-            getCookie:getCookie
+            getCookie: getCookie,
+            getUsername: getUsername
         };
     }
-
 ]);
-
